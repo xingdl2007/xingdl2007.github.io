@@ -1,4 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[程嵇邢滑の部落格]]></title><description><![CDATA[A Place of No Significance ]]></description><link>https://griddy.netlify.com/</link><generator>RSS for Node</generator><lastBuildDate>Sun, 10 Nov 2019 16:13:38 GMT</lastBuildDate><item><title><![CDATA[NoSQL Databases: An Overview]]></title><description><![CDATA[Over the last few years we have seen the rise of a new type of databases, known as NoSQL databases, that are challenging the dominance of…]]></description><link>https://griddy.netlify.com//blog/nosql-databases-an-overview/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/nosql-databases-an-overview/</guid><pubDate>Sun, 10 Nov 2019 21:10:51 GMT</pubDate><content:encoded>&lt;p&gt;Over the last few years we have seen the rise of a new type of databases, known as NoSQL databases, that are challenging the dominance of relational databases. Relational databases have dominated the software industry for a long time providing mechanisms to store data persistently, concurrency control, transactions, mostly standard interfaces and mechanisms to integrate application data, reporting. The dominance of relational databases, however, is cracking.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[程嵇邢滑の部落格]]></title><description><![CDATA[A Place of No Significance ]]></description><link>https://griddy.netlify.com/</link><generator>RSS for Node</generator><lastBuildDate>Sun, 10 Nov 2019 17:19:06 GMT</lastBuildDate><item><title><![CDATA[std::function/std::bind的救赎]]></title><description><![CDATA[这是那篇C++0X的正文。太长，先写上半部分发了。 Function/bind可以是一个很简单的话题，因为它其实不过就是一个泛型的函数指针。但是如果那么来谈，就没意思了，也犯不上写这篇东西。在我看来，这个事情要讲的话，就应该讲透，讲到回调（callback…]]></description><link>https://griddy.netlify.com//blog/cpp-concept/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/cpp-concept/</guid><pubDate>Mon, 11 Nov 2019 00:29:37 GMT</pubDate><content:encoded>&lt;p&gt;这是那篇C++0X的正文。太长，先写上半部分发了。&lt;/p&gt;
+&lt;p&gt;Function/bind可以是一个很简单的话题，因为它其实不过就是一个泛型的函数指针。但是如果那么来谈，就没意思了，也犯不上写这篇东西。在我看来，这个事情要讲的话，就应该讲透，讲到回调（callback）、代理（delegate）、信号（signal）和消息传递（messaging）的层面，因为它确实是太重要了。这个话题不但与面向对象的核心思想密切相关，而且是面向对象两大流派之间交锋的中心。围绕这个问题的思考和争论，几乎把20年来所有主流的编程平台和编程语言都搅进来了。所以，如果详尽铺陈，这个话题直接可以写一本书。&lt;/p&gt;
+&lt;p&gt;写书我当然没那个水平，但这个题目确实一直想动一动。然而这个主题实在太大，我实在没有精力把它完整的写下来；这个主题也很深，特别是涉及到并发环境有关的话题，我的理解还非常肤浅，总觉得我认识的很多高手都比我更有资格写这个话题。所以犹豫了很久，要不要现在写，该怎么写。最后我觉得，确实不能把一篇博客文章写成一本20年面向对象技术史记，所以决定保留大的&lt;a href=&quot;http://lib.csdn.net/base/architecture&quot;&gt;架构&lt;/a&gt;，但是对其中具体的技术细节点到为止。我不会去详细地列举代码，分析对象的内存布局，画示意图，但是会把最重要的结论和观点写下来，说得好听一点是提纲挈领，说的不好听就是语焉不详。但无论如何，我想这样一篇东西，一是谈谈我对这个事情的看法，二是“抛砖引玉”，引来高手的关注，引出更深刻和完整的叙述。&lt;/p&gt;
+&lt;p&gt;下面开始。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;程序设计有一个范式（paradigm）问题。所谓范式，就是组织程序的基本思想，而这个基本思想，反映了程序设计者对程序的一个基本的哲学观，也就是说，他认为程序的本质是什么，他认为一个大的程序是由什么组成的。而这，又跟他对于现实世界的看法有关。显然，这样的看法不可能有很多种。编程作为一门行业，独立存在快60年了，但是所出现的范式不过三种——过程范式、函数范式、对象范式。其中函数范式与现实世界差距比较大，在这里不讨论。而过程范式和对象范式可以视为对程序本质的两种根本不同的看法，而且能够分别在现实世界中找到相应的映射。&lt;/li&gt;
+&lt;li&gt;过程范式认为，程序是由一个又一个过程经过顺序、选择和循环的结构组合而成。反映在现实世界，过程范式体现了劳动分工之前“全能人”的工作特点——所有的事情都能干，所有的资源都是我的，只不过得具体的事情得一步步地来做。&lt;/li&gt;
+&lt;li&gt;对象范式则反映了劳动分工之后的团队协作的工作特点——每个人各有所长，各司其职，有各自的私有资源，工件和信息在人们之间彼此传递，最后完成工作。因此，对象范式也就形成了自己对程序的看法——程序是由一组对象组成，这些对象各有所能，通过消息传递实现协作。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对象范式与过程范式相比，有三个突出的优势，第一，由于实现了逻辑上的分工，降低了大规模程序的开发难度。第二，灵活性更好——若干对象在一起，可以灵活组合，可以以不同的方式协作，完成不同的任务，也可以灵活的替换和升级。第三，对象范式更加适应图形化、网络化、消息驱动的现代计算环境。&lt;/p&gt;
+&lt;p&gt;所以，较之于过程范式，对象范式，或者说“面向对象”，确实是更具优势的编程范式。最近看到一些文章抨击面向对象，说面向对象是胡扯，我认为要具体分析。对面向对象的一部分批评，是冲着主流的“面向对象”语言去的，这确实是有道理的，我在下面也会谈到，而且会骂得更狠。而另一个批评的声音，主要而来自STL之父Alex Stepanov，他说的当然有他的道理，不过要知道该牛人是前苏联莫斯科国立罗蒙诺索夫大学数学系博士，你只要翻翻前苏联的大学数学教材就知道了，能够在莫大拿到数学博士的，根本就是披着人皮的外星高等智慧。而我们编写地球上的程序，可能还是应该以地球人的观点为主。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;重复一遍对象范式的两个基本观念：&lt;code class=&quot;language-text&quot;&gt;程序是由对象组成的；对象之间互相发送消息，协作完成任务；&lt;/code&gt;请注意，这两个观念与后来我们熟知的面向对象三要素“封装、继承、多态”根本不在一个层面上，倒是与再后来的“组件、接口”神合。&lt;/li&gt;
+&lt;li&gt;世界上第一个面向对象语言是Simula-67，第二个面向对象语言是Smalltalk-71。Smalltalk受到了Simula-67的启发，基本出发点相同，但也有重大的不同。先说相同之处，Simula和Smalltalk都秉承上述对象范式的两个基本观念，为了方便对象的构造，也都引入了类、继承等概念。也就是说，类、继承这些机制是为了实现对象范式原则而构造出来的第二位的、工具性的机制，那么为什么后来这些第二位的东西篡了主位，后面我会再来分析。而Simula和Smalltalk最重大的不同，就是Simula用方法调用的方式向对象发送消息，而Smalltalk构造了更灵活和更纯粹的消息发送机制。具体的说，向一个Simula对象中发送消息，就是调用这个对象的一个方法，或者称成员函数。那么你怎么知道能够在这个对象上调用这个成员函数呢？或者说，你怎么知道能够向这个对象发送某个消息呢？这就要求你必须确保这个对象具有合适的类型，也就是说，你得先知道哦这个对象是什么，才能向它发消息。而消息的实现方式被直接处理为成员函数调用，或虚函数调用。而Smalltalk在这一点上做了一个历史性的跨越，它实现了一个与目标对象无关的消息发送机制，不管那个对象是谁，也不管它是不是能正确的处理一个消息，作为发送消息的对象来说，可以毫无顾忌地抓住一个对象就发消息过去。接到消息的对象，要尝试理解这个消息，并最后调用自己的过程来处理消息。如果这个消息能被处理，那个对象自然会处理好，如果不能被处理，Smalltalk系统会向消息的发送者回传一个doesNotUnderstand消息，予以通知。对象不用关心消息是如何传递给另一个对象的，传递过程被分离出来（而不是像Simula那样明确地被以成员函数调用的方式实现），可以是在内存中复制，也可以是进程间通讯。到了Smalltalk-80时，消息传递甚至可以跨越网络。为了方便后面的讨论，不妨把源自Simula的消息机制称为“&lt;strong&gt;静态消息机制&lt;/strong&gt;”，把源自Smalltalk的消息机制称为&lt;strong&gt;“动态消息机制”&lt;/strong&gt;。Simula与Smalltalk之间对于消息机制的不同选择，主要是因为两者于用途。前者是用于仿真程序开发，而后者用于图形界面环境构建，看上去各自合情合理。然而，就是这么一点简单的区别，却造成了巨大的历史后果。&lt;/li&gt;
+&lt;li&gt;到了1980年代，C++出现了。Bjarne Stroustrup在博士期间深入研究过Simula，非常欣赏其思想，于是就在&lt;a href=&quot;http://lib.csdn.net/base/c&quot;&gt;C语言&lt;/a&gt;语法的基础之上，几乎把Simula的思想照搬过来，形成了最初的C++。C++问世以之初，主要用于解决规模稍大的传统类型的编程问题，迅取得了巨大的成功，也证明了对象范式本身所具有的威力。大约在同期，Brad Cox根据Smalltalk的思想设计了&lt;a href=&quot;http://lib.csdn.net/base/objective-c&quot;&gt;Objective-C&lt;/a&gt;，可是由于其语法怪异，没有流行起来。只有Steve Jobs这种具有禅宗美学鉴赏力的世外高人，把它奉为瑰宝，与1988年连锅把&lt;a href=&quot;http://lib.csdn.net/base/objective-c&quot;&gt;objective-c&lt;/a&gt;的团队和产品一口气买了下来。&lt;/li&gt;
+&lt;li&gt;就在同一时期，GUI成为热门。虽然GUI的本质是对象范型的，但是当时（1980年代中期）的面向对象语言，包括C++语言，还远不成熟，因此最初的GUI系统无一例外是使用C和汇编语言开发的。或者说，最初的GUI开发者硬是用抽象级别更低的语言构造了一个面向对象系统。熟悉Win32 SDK开发的人，应该知道我在说什么。&lt;/li&gt;
+&lt;li&gt;当时很多人以为，如果C++更成熟些，直接用C++来构造Windows系统会大大地容易。也有人觉得，尽管Windows系统本身使用C写的，但是其面向对象的本质与C++更契合，所以在其基础上包装一个C++的GUI framework一定是轻而易举。可是一动手人们就发现，完全不是那么回事。用C++开发Windows框架难得要死。为什么呢？主要就是Windows系统中的消息机制实际上是动态的，与C++的静态消息机制根本配合不到一起去。在Windows里，你可以向任何一个窗口发送消息，这个窗口自己会在自己的wndproc里来处理这个消息，如果它处理不了，就交给default window/dialog proc去处理。而在C++里，你要向一个窗口发消息，就得确保这个窗口能处理这个消息，或者说，具有合适的类型。这样一来的话，就会导致一个错综复杂的窗口类层次结构，无法实现。而如果你要让所有的窗口类都能处理所有可能的消息，且不论这样在逻辑上就行不通（用户定义的消息怎么处理？），单在实现上就不可接受——为一个小小的不同就得创造一个新的窗口类，每一个小小的窗口类都要背上一个多达数百项的v-table，而其中可能99%的项都是浪费，不要说在当时，就是在今天，内存数量非常丰富的时候，如果每一个GUI程序都这么搞，用户也吃不消。&lt;/li&gt;
+&lt;li&gt;实际上C++的静态消息机制还引起了更深严重的问题——扭曲了人们对面向对象的理解。既然必须要先知道对象的类型，才能向对象发消息，那么“类”这个概念就特别重要了，而对象只不过是类这个模子里造出来的东西，反而不重要。渐渐的，“面向对象编程”变成了“面向类编程”，“面向类编程”变成了“构造类继承树”。放在眼前的鲜活的对象活动不重要了，反而是其背后的静态类型系统成为关键。“封装、继承”这些第二等的特性，喧宾夺主，俨然成了面向对象的要素。每个程序员似乎都要先成为领域专家，然后成为领域分类学专家，然后构造一个完整的继承树，然后才能new出对象，让程序跑起来。正是因为这个过程太漫长，太困难，再加上C++本身的复杂度就很大，所以C++出现这么多年，真正堪称经典的面向对象类库和框架，几乎屈指可数。很多流行的库，比如MFC、iostream，都暴露出不少问题。一般程序员总觉得是自己的水平不够，于是下更大功夫去练剑。殊不知根本上是方向错了，脱离了对象范式的本质，企图用静态分类法来对现实世界建模，去刻画变化万千的动态世界。这么难的事，你水平再高也很难做好。可以从一个具体的例子来理解这个道理，比如在一个GUI系统里，一个 Push Button 的设计问题。事实上在一个实际的程序里，一个 push button 到底“是不是”一个 button，进而是不是一个 window/widget，并不重要，本质上我根本不关心它是什么，它从属于哪一个类，在继承树里处于什么位置，只要那里有这么一个东西，我可以点它，点完了可以发生相应的效果，就可以了。可是Simula –&gt; C++ 所鼓励的面向对象设计风格，非要上来就想清楚，a Push Button **is-a **Button, a Button **is-a **Command-Target Control, a Command-Target Control **is-a **Control, a Control **is-a **Window. 把这一圈都想透彻之后，才能 new 一个 Push Button，然后才能让它工作。这就形而上学了，这就脱离实际了。所以很难做好。你看到 MFC 的类继承树，觉得设计者太牛了，能把这些层次概念都想清楚，自己的水平还不够，还得修炼。实际上呢，这个设计是经过数不清的失败和钱磨出来、砸出来的，MFC的前身 Afx 不是就失败了吗？1995年还有一个叫做 Taligent 的大项目，召集了包括 Eric Gamma 在内的一大堆牛人，要用C++做一个一统天下的application framework，最后也以惨败告终，连公司都倒闭了，CEO车祸身亡，牛人们悉数遣散。附带说一下，这个Taligent项目是为了跟NextSTEP和Microsoft Cairo竞争，前者用Objective-C编写，后来发展为Cocoa，后者用传统的Win32 + COM作为基础架构，后来发展为Windows NT。而Objective-C和COM，恰恰就在动态消息分派方面，与C++迥然不同。后面还会谈到。客观地说，“面向类的设计”并不是没有意义。来源于实践又高于实践的抽象和概念，往往能更有力地把握住现实世界的本质，比如MVC架构，就是这样的有力的抽象。但是这种抽象，应该是来源于长期最佳实践的总结和提高，而不是面对问题时主要的解决思路。过于强调这种抽象，无异于假定程序员各个都是哲学家，具有对现实世界准确而深刻的抽象能力，当然是不符合实际情况的。结果呢，刚学习面向对象没几天的程序员，对眼前鲜活的对象世界视而不见，一个个都煞有介事地去搞哲学冥想，企图越过现实世界，去抽象出其背后本质，当然败得很惨。其实C++问世之后不久，这个问题就暴露出来了。第一个C++编译器 Cfront 1.0 是单继承，而到了 Cfront 2.0，加入了多继承。为什么？就是因为使用中人们发现逻辑上似乎完美的静态单继承关系，碰到复杂灵活的现实世界，就破绽百出——蝙蝠是鸟也是兽，水上飞机能飞也能游，它们该如何归类呢？本来这应该促使大家反思继承这个机制本身，但是那个时候全世界陷入继承狂热，于是就开始给继承打补丁，加入多继承，进而加入虚继承，。到了虚继承，明眼人一看便知，这只是一个语法补丁，是为了逃避职责而制造的一块无用的遮羞布，它已经完全已经脱离实践了——有谁在事前能够判断是否应该对基类进行虚继承呢？到了1990年代中期，问题已经十分明显。UML中有一个对象活动图，其描述的就是运行时对象之间相互传递消息的模型。1994年Robert C. Martin在《Object-Oriented C++ Design Using Booch Method》中，曾建议面向对象设计从对象活动图入手，而不是从类图入手。而1995年出版的经典作品《Design Patterns》中，建议优先考虑组合而不是继承，这也是尽人皆知的事情。这些迹象表明，在那个时候，面向对象社区里的思想领袖们，已经意识到“面向类的设计”并不好用。只可惜他们的革命精神还不够。&lt;/li&gt;
+&lt;li&gt;你可能要问，&lt;a href=&quot;http://lib.csdn.net/base/java&quot;&gt;Java&lt;/a&gt;和.NET也是用继承关系组织类库，并进行设计的啊，怎么那么成功呢？这里有三点应该注意。第一，C++的难不仅仅在于其静态结构体系，还有很多源于语言设计上的包袱，比如对C的兼容，比如没有垃圾收集机制，比如对效率的强调，等等。一旦把这些包袱丢掉，设计的难度确实可以大大下降。第二，Java和.NET的核心类库是在C++十几年成功和失败的经验教训基础之上，结合COM体系优点设计实现的，自然要好上一大块。事实上，在Java和.NET核心类库的设计中很多地方，体现的是基于接口的设计，和真正的基于对象的设计。有了这两个主角站台，“面向类的设计”不能喧宾夺主，也能发挥一些好的作用。第三，如后文指出，Java和.NET中分别对C++最大的问题——缺少对象级别的delegate机制做出了自己的回应，这就大大弥补了原来的问题。尽管如此，Java还是沾染上了“面向类设计”的癌症，基础类库里就有很多架床叠屋的设计，而J2EE/&lt;a href=&quot;http://lib.csdn.net/base/java&quot;&gt;Java&lt;/a&gt;EE当中，这种形而上学的设计也很普遍，所以也引发了好几次轻量化的运动。这方面我并不是太懂，可能需要真正的Java高手出来现身说法。我对Java的看法以前就讲过——平台和语言核心非常好，但风气不好，崇尚华丽繁复的设计，装牛逼的人太多。至于.NET，我听陈榕介绍过，在设计.NET的时候，微软内部对于是否允许继承爆发了非常激烈的争论。很多资深高人都强烈反对继承。至于最后引入继承，很大程度上是营销需要压倒了技术理性。尽管如此，由于有COM的基础，又实现了非常彻底的delegate，所以 .NET 的设计水平还是很高的。它的主要问题不在这，在于太急于求胜，更新速度太快，基础不牢。当然，根本问题还是微软没有能够在Web和Mobile领域里占到多大的优势，也就使得.NET没有用武之地。&lt;/li&gt;
+&lt;li&gt;COM。COM的要义是，软件是由COM Components组成，components之间彼此通过接口相互通讯。这是否让你回想起本文开篇所提出的对象范型的两个基本原则？有趣的是，在COM的术语里，“COM Component ” 与“object ”通假，这就使COM的心思昭然若揭了。Don Box在Essential COM里开篇就说，COM是更好的C++，事实上就是告诉大家，形而上学的“面向类设计”不好使，还是回到对象吧。用COM开发的时候，一个组件“是什么”不重要，它具有什么接口，也就是说，能够对它发什么消息，才是重要的。你可以用IUnknown::QueryInterface问组件能对哪一组消息作出反应。向组件分派消息也不一定要被绑定在方法调用上，如果实现了 IDispatch，还可以实现“自动化”调用，也就是COM术语里的 Automation，而通过 列集（mashal），可以跨进程、跨网络向另一组件发送消息，通过 moniker，可以在分布式系统里定位和发现组件。如果你抱着“对象——消息”的观念去看COM的设计，就会意识到，整个COM体系就是用规范如何做对象，如何发消息的。或者更直白一点，COM就是用C/C++硬是模拟出一个Smalltalk。而且COM的概念世界里没有继承，就其纯洁性而言，比Smalltalk还Smalltalk。在对象泛型上，COM达到了一个高峰，领先于那个时代，甚至于比它的继任.NET还要纯洁。COM的主要问题是它的学习难度和安全问题，而且，它过于追求纯洁性，完全放弃了“面向类设计” 的机制，显得有点过。&lt;/li&gt;
+&lt;li&gt;好像有点扯远了，其实还是在说正事。上面说到由于C++的静态消息机制，导致了形而上学的“面向类的设计”，祸害无穷。但实际上，C++是有一个补救机会的，那就是实现对象级别的delegate机制。学过.NET的人，一听delegate这个词就知道是什么意思，但Java里没有对应机制。在C++的术语体系里，所谓对象级别delegate，就是一个对象回调机制。通过delegate，一个对象A可以把一个特定工作，比如处理用户的鼠标事件，委托给另一个对象B的一个方法来完成。A不必知道B的名字，也不用知道它的类型，甚至都不需要知道B的存在，只要求B对象具有一个签名正确的方法，就可以通过delegate把工作交给B的这个方法来执行。在&lt;a href=&quot;http://lib.csdn.net/base/c&quot;&gt;c语言&lt;/a&gt;里，这个机制是通过函数指针实现的，所以很自然的，在C++里，我们希望通过指向成员函数的指针来解决类似问题。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;然而就在这个问题上，C++让人扼腕痛惜。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Comment:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;个人觉得也不一定要把function/bind升到那样的高度，也就是一个语法糖之类的东东，最多就是个回调和代理，还谈不上信号和消息机制，而且也不象C#原生的event和delegate好用，另外它无法解决，异步事件的问题。其次它的成本也是比较高的，一个function为了兼容钻石继承的类成员函数，它至少需要32个字节，速度也不快。未必比FastDelegate好用。因为c++本意是在一种贴近机器的基础上来实现多种编程方式，因此它没有实现delegate和event，我想未来也不会有这些东东。c++的优点是可以用各种奇怪的手段来实现某个功能，其实未必是好事。毕竟我们只需要实现某个功能就好。感觉现在c++库太多，可是象字符串这个常用的东东，都面临着一大堆选择。可能很多人用了多年的c++，仍对c++感到陌生。个人越来越喜欢python了，够用就行。程序员有必要要掌握茴字的所有写法么？&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;孟岩 &lt;a href=&quot;http://blog.csdn.net/myan/article/details/5928531&quot;&gt;http://blog.csdn.net/myan/article/details/5928531&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[NoSQL Databases: An Overview]]></title><description><![CDATA[Over the last few years we have seen the rise of a new type of databases, known as NoSQL databases, that are challenging the dominance of…]]></description><link>https://griddy.netlify.com//blog/nosql-databases-an-overview/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/nosql-databases-an-overview/</guid><pubDate>Sun, 10 Nov 2019 21:10:51 GMT</pubDate><content:encoded>&lt;p&gt;Over the last few years we have seen the rise of a new type of databases, known as NoSQL databases, that are challenging the dominance of relational databases. Relational databases have dominated the software industry for a long time providing mechanisms to store data persistently, concurrency control, transactions, mostly standard interfaces and mechanisms to integrate application data, reporting. The dominance of relational databases, however, is cracking.&lt;/p&gt;
 &lt;p&gt;Author: Martin Fowler &lt;a href=&quot;https://www.thoughtworks.com/de/insights/blog/nosql-databases-overview&quot;&gt;https://www.thoughtworks.com/de/insights/blog/nosql-databases-overview&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;&lt;strong&gt;NoSQL what does it mean&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;What does NoSQL mean and how do you categorize these databases? NoSQL means Not Only SQL, implying that when designing a software solution or product, there are more than one storage mechanism that could be used based on the needs. NoSQL was a hashtag (#nosql) choosen for a meetup to discuss these new databases. The most important result of the rise of NoSQL is Polyglot Persistence. NoSQL does not have a prescriptive definition but we can make a set of common observations, such as:&lt;/p&gt;
@@ -240,7 +267,211 @@
 &lt;p&gt;Schema-less databases can use the same migration techniques as databases with strong schemas, in schema-less databases we can also read data in a way that&apos;s tolerant to changes in the data&apos;s implicit schema and use incremental migration to update data, thus allowing for zero downtime deployments, making them more popular with 24*7 systems.&lt;/p&gt;
 &lt;h3&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;All the choice provided by the rise of NoSQL databases does not mean the demise of RDBMS databases. We are entering an era of polyglot persistence, a technique that uses different data storage technologies to handle varying data storage needs. Polyglot persistence can apply across an enterprise or within a single application. &lt;/p&gt;
-&lt;p&gt;For more details, read&lt;a href=&quot;http://martinfowler.com/books/nosql.html&quot;&gt; &lt;/a&gt;&lt;a href=&quot;http://martinfowler.com/books/nosql.html&quot;&gt;&lt;em&gt;NoSQL Distilled: A Brief Guide to the Emerging World of Polyglot Persistence&lt;/em&gt;&lt;/a&gt; by Pramod Sadalage and Martin Fowler. &lt;/p&gt;</content:encoded></item><item><title><![CDATA[LevelDB日知录]]></title><description><![CDATA[初识LevelDB 说起LevelDb也许您不清楚，但是如果作为IT工程师，不知道下面两位大神级别的工程师，那您的领导估计会Hold不住了：Jeff Dean和Sanjay Ghemawat。这两位是Google公司重量级的工程师，为数甚少的Google Fellow…]]></description><link>https://griddy.netlify.com//blog/leveldb/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/leveldb/</guid><pubDate>Sun, 03 Nov 2019 21:39:06 GMT</pubDate><content:encoded>&lt;h2&gt;初识LevelDB&lt;/h2&gt;
+&lt;p&gt;For more details, read&lt;a href=&quot;http://martinfowler.com/books/nosql.html&quot;&gt; &lt;/a&gt;&lt;a href=&quot;http://martinfowler.com/books/nosql.html&quot;&gt;&lt;em&gt;NoSQL Distilled: A Brief Guide to the Emerging World of Polyglot Persistence&lt;/em&gt;&lt;/a&gt; by Pramod Sadalage and Martin Fowler. &lt;/p&gt;</content:encoded></item><item><title><![CDATA[Your own error code]]></title><description><![CDATA[I was recently implementing the “classification of error conditions” in my application offered by the functionality behind std::error_code…]]></description><link>https://griddy.netlify.com//blog/cpp-error-code/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/cpp-error-code/</guid><pubDate>Sun, 10 Nov 2019 00:48:16 GMT</pubDate><content:encoded>&lt;p&gt;I was recently implementing the “classification of error conditions” in my application offered by the functionality behind &lt;em&gt;std::error_code&lt;/em&gt;. In this post I want to share some of my experience and insight.&lt;/p&gt;
+&lt;p&gt;C++11 comes with a quite sophisticated mechanism for classifying error conditions. You may have encountered names like “error code”, “error condition”, &quot;error category”, but figuring out what good they are, and how to use them is difficult. The only valuable source of information on the subject in the Internet is a series of blog posts by Christopher Kohlhoff, the author of Boost.Asio library:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;“&lt;a href=&quot;http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-1.html&quot;&gt;System error support in C++0x – part 1&lt;/a&gt;”&lt;/li&gt;
+&lt;li&gt;“&lt;a href=&quot;http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-2.html&quot;&gt;System error support in C++0x – part 2&lt;/a&gt;”&lt;/li&gt;
+&lt;li&gt;“&lt;a href=&quot;http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-3.html&quot;&gt;System error support in C++0x – part 3&lt;/a&gt;”&lt;/li&gt;
+&lt;li&gt;“&lt;a href=&quot;http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-4.html&quot;&gt;System error support in C++0x – part 4&lt;/a&gt;”&lt;/li&gt;
+&lt;li&gt;“&lt;a href=&quot;http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-5.html&quot;&gt;System error support in C++0x – part 5&lt;/a&gt;”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And this was a really good start for me. But still, I believe it would be beneficial to have more than one source of information, and more than one way of explaining the subject. So here we go… &lt;/p&gt;
+&lt;p&gt;The problem&lt;/p&gt;
+&lt;p&gt;First, why I need it. I have a service for looking for flight connections. You tell me where from and where to you want to go, and I will offer you concrete flights, and a price. In order to be able to do this, my service calls other services in turn:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;one for finding the (short) sequence of flights that will take you to your destination,&lt;/li&gt;
+&lt;li&gt;one for checking if there is still seats available on these flights in the requested class of service (economy class, business class)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Each of these services can fail for a number of reasons. Reasons for failure — different for each service — can be enumerated. For instance the authors of these two services chose the following enumerations:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;enum class FlightsErrc
+{
+    // no 0
+    NonexistentLocations = 10, // requested airport doesn&amp;#39;t exist
+    DatesInThePast,            // booking flight for yesterday
+    InvertedDates,             // returning before departure
+    NoFlightsFound       = 20, // did not find any combination
+    ProtocolViolation    = 30, // e.g., bad XML
+    ConnectionError,           // could not connect to server
+    ResourceError,             // service run short of resources
+    Timeout,                   // did not respond in time
+};
+
+enum class SeatsErrc
+{
+    // no 0
+    InvalidRequest = 1,    // e.g., bad XML
+    CouldNotConnect,       // could not connect to server
+    InternalError,         // service run short of resources
+    NoResponse,            // did not respond in time
+    NonexistentClass,      // requested class does not exist
+    NoSeatAvailable,       // all seats booked
+};&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Some things to observe here. First, the reasons for failure are quite similar in either service, but they are assigned different names and different numeric values. This is because two services are developed independently by two different teams. This also means that the same numeric value can refer to two completely different conditions depending on which service reported it.&lt;/p&gt;
+&lt;p&gt;Second, as can be seen from the names, the causes for failure come from different sources:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;environment: internal problem in the service (e.g., with resources),&lt;/li&gt;
+&lt;li&gt;miscommunication: between two services,&lt;/li&gt;
+&lt;li&gt;user: providing incorrect data in request,&lt;/li&gt;
+&lt;li&gt;just bad luck: no error actually, but no response can be returned to the user because e.g., all seats have been sold out.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now, what do I really need those different error codes for? If any of these errors occurs we want to stop processing the current request from the user. When I can offer no flight connection to him, I only want to distinguish the following situations:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;you gave us illogical request,&lt;/li&gt;
+&lt;li&gt;no airline we are aware of is able to offer you a trip,&lt;/li&gt;
+&lt;li&gt;there is some problem with the system which you will not understand but which prevents us from giving you the requested answer.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;On the other hand, for the purpose of internal audit, or looking for bugs in the logs, we want a more detailed information to be put into logs, like which system reported the failure, and what actually happened. This can be encoded in an integer number. Any more details, like ports on which we tried to connect, or what database we tried to connect, are likely to be logged separately, so the data encoded in ints should be sufficient.&lt;/p&gt;
+&lt;h2&gt;The std::error_code&lt;/h2&gt;
+&lt;p&gt;The Standard Library &lt;em&gt;std::error_code&lt;/em&gt; is designed to hold exactly this type of information: a number representing the status, and a “domain” within which this number is assigned meaning. In other words, an &lt;em&gt;std::error_code&lt;/em&gt; is a pair: &lt;em&gt;{int, domain}&lt;/em&gt;. This is reflected in its interface:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;void inspect(std::error_code ec)
+{
+    ec.value();    // the int value
+    ec.category(); // the domain
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;But you almost never want to inspect an error&lt;em&gt;code this way. As we already said, the two things we want to do is to log the state of the error&lt;/em&gt;code as it was constructed (without being later transformed by higher layers of the application), and to use it to answer a specific question, like “is this error caused by the user providing data he knew was incorrect”.&lt;/p&gt;
+&lt;p&gt;In case you ask yourself, why use std::error&lt;em&gt;code instead of exceptions, let me clarify: the two things are not mutually exclusive. I want to report failures in my program through exceptions. It is that inside the exception, rather than storing and parsing strings, I just want to contain an error&lt;/em&gt;code that I can easily inspect. std::error&lt;em&gt;code has nothing to do with avoiding exceptions. Also, in my use case I do not feel a compelling reason to have many different types of exceptions. I just need one: I will catch them only in one (or two) places and I will tell the different situations by inspecting the error&lt;/em&gt;code object.&lt;/p&gt;
+&lt;h2&gt;Plugging your enumeration&lt;/h2&gt;
+&lt;p&gt;Now, we want to adapt the std::error_code so that it can store error situations from the Flights service described above:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;enum class FlightsErrc
+{
+    // no 0
+    NonexistentLocations = 10, // requested airport doesn&amp;#39;t exist
+    DatesInThePast,            // booking flight for yesterday
+    InvertedDates,             // returning before departure
+    NoFlightsFound       = 20, // did not find any combination
+    ProtocolViolation    = 30, // e.g., bad XML
+    ConnectionError,           // could not connect to server
+    ResourceError,             // service run short of resources
+    Timeout,                   // did not respond in time
+};&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We should be able to convert from our enum to std::error_code:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;std::error_code ec = FlightsErrc::NonexistentLocations;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;But our enumeration must meet one condition: numeric value 0 must not represent an error situation. 0 represents a success in any error domain (category). This expectation is later exploited when we are inspecting an std::error_code object:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;void inspect(std::error_code ec)
+{
+    if (ec) // equivalent to: ec.value() != 0
+        handle_failure(ec);
+    else
+        handle_success();
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this sense the &lt;a href=&quot;http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-4.html&quot;&gt;mentioned blog post&lt;/a&gt; has it incorrect that numeric value 200 indicates success.&lt;/p&gt;
+&lt;p&gt;So this is what we did: we did not start the enumeration of FlightsErrc with 0. This in turn implies that we can create the enumeration that does not correspond to any of the enumerated values:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;FlightsErrc fe {};&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This is an important characteristic of enums in C++ (even the C++11 enum classes): you can create values from outside the enumerated range. It is for this reason that compilers issue a warning in switch-statement that “not all control paths return value” even though you have a case label for every enumeration.&lt;/p&gt;
+&lt;p&gt;Now, back to the conversion, std::error_code has a converting constructor template that looks more-less like this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;template &amp;lt;class Errc&amp;gt;
+    requires is_error_code&amp;lt;Errc&amp;gt;::value
+error_code(Errc e) noexcept
+    : error_code{make_error_code(e)}
+    {}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(Of course, I used yet non-existent concepts syntax, but you get the idea: this constructor is only visible when std::is&lt;em&gt;error&lt;/em&gt;code&lt;Errc&gt;::value evaluates to true.)&lt;/p&gt;
+&lt;p&gt;This constructor is meant to be a customization hook for plugging custom error enumerations into the system. In order to plug FlightsErrc, we have to make sure that:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;em&gt;std::is&lt;em&gt;error&lt;/em&gt;code&lt;Errc&gt;::value&lt;/em&gt; returns true,&lt;/li&gt;
+&lt;li&gt;Function &lt;em&gt;make&lt;em&gt;error&lt;/em&gt;code&lt;/em&gt; taking FlightsErrc is defined and accessible through argument-dependent lookup.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Regarding the first part, we need to specialize the standard type trait:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;namespace std
+{
+    template &amp;lt;&amp;gt;
+    struct is_error_code_enum&amp;lt;FlightsErrc&amp;gt; : true_type {};
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This is one of these situations where declaring something in namespace &lt;em&gt;std&lt;/em&gt; is legal.&lt;/p&gt;
+&lt;p&gt;Regarding the second part, we just need to declare function overload make&lt;em&gt;error&lt;/em&gt;code in the same namespace as enum FlightsErrc:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;enum class FlightsErrc;
+std::error_code make_error_code(FlightsErrc);&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And this is all that other parts of the program/library need to see, and what we have to provide in the header file. The rest is the implementation of function make&lt;em&gt;error&lt;/em&gt;code and we can put it in a separate translation unit (a .cpp file).&lt;/p&gt;
+&lt;p&gt;With this in place, we can make an impression that FlightsErrc is an error_code:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;std::error_code ec = FlightsErrc::NoFlightsFound;
+assert (ec == FlightsErrc::NoFlightsFound);
+assert (ec != FlightsErrc::InvertedDates);&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Defining error category&lt;/h2&gt;
+&lt;p&gt;So far, I have only been saying that error_code is a pair: {number, domain}, where the first element uniquely identifies the particular error situation within the domain, and the second uniquely identifies the domain of errors across all possible error domains that will ever be conceived. But given that this domain ID should be stored in one machine word, how can we guarantee that it will be unique across all libraries currently in the market and those yet to come? We are hiding the domain ID as an implementation detail. If we are to use another third-party library with its own error enumeration, how can we guarantee that their domain ID will not be equal to ours?&lt;/p&gt;
+&lt;p&gt;The solution chosen for &lt;em&gt;std::error_code&lt;/em&gt; relies on the observation that for every global object (or more formally: namespace-scope object) a unique address is assigned. No matter how many libraries are combined together, with how many globals, each global has a unique address — this is quite obvious.&lt;/p&gt;
+&lt;p&gt;In order to exploit this, we have to associate with every type that wants to be plugged into the error&lt;em&gt;code system a unique global object, and then use its address as an ID. Now, this implies using pointers for representing domains, and this is indeed what *std::error&lt;/em&gt;code* is doing. But now, that we store some T* the question is what the T should be. The choice is quite clever: let’s use a type that can offer us additional benefits. The type T used is &lt;em&gt;std::error_category&lt;/em&gt;, and the additional benefit is in its interface:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;class error_category {
+public:
+    virtual const char* name() const noexcept = 0;
+    virtual string message(int ev) const = 0;
+    // other members ...
+};&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I used name “domain”, the Standard Library uses name “error category” for the same purpose.&lt;/p&gt;
+&lt;p&gt;It has pure virtual member functions, which already suggests something: we will be storing pointers to classes derived from std::error&lt;em&gt;category: each new error enum requires a new corresponding class to be derived from std::error&lt;/em&gt;category. Usually having pure virtual functions implies allocating objects on the heap, but we will do no such things. We will be creating global objects and pointing to them.&lt;/p&gt;
+&lt;p&gt;There are more virtual member functions in std::error_category that on other occasions need to be customized, but we will not have to do it for the purpose of plugging our FlightsErrc.&lt;/p&gt;
+&lt;p&gt;Now, for each custom error “domain” represented by a class derived from std::error_category, we need to override two member functions. Function &lt;em&gt;name&lt;/em&gt; is expected to return a short mnemonic-like descriptive name of this error category (domain). Function &lt;em&gt;message&lt;/em&gt; assigns a text description for every numeric error value in this domain. In order to illustrate it better, let’s define an error category for our enum FlightsErrc. Remember, this class only needs to be visible in one translation unit. In other files we will just be using an address to its instance.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;namespace { // anonymous namespace
+
+struct FlightsErrCategory : std::error_category
+{
+    const char* name() const noexcept override;
+    std::string message(int ev) const override;
+};
+
+const char* FlightsErrCategory::name() const noexcept
+{
+    return &amp;quot;flights&amp;quot;;
+}
+
+std::string FlightsErrCategory::message(int ev) const
+{
+    switch (static_cast&amp;lt;FlightsErrc&amp;gt;(ev))
+    {
+    case FlightsErrc::NonexistentLocations:
+        return &amp;quot;nonexistent airport name in request&amp;quot;;
+    
+    case FlightsErrc::DatesInThePast:
+        return &amp;quot;request for a date from the past&amp;quot;;
+    
+    case FlightsErrc::InvertedDates:
+        return &amp;quot;requested flight return date before departure date&amp;quot;;
+    
+    case FlightsErrc::NoFlightsFound:
+        return &amp;quot;no filight combination found&amp;quot;;
+    
+    case FlightsErrc::ProtocolViolation:
+        return &amp;quot;received malformed request&amp;quot;;
+    
+    case FlightsErrc::ConnectionError:
+        return &amp;quot;could not connect to server&amp;quot;;
+    
+    case FlightsErrc::ResourceError:
+        return &amp;quot;insufficient resources&amp;quot;;
+    
+    case FlightsErrc::Timeout:
+        return &amp;quot;processing timed out&amp;quot;;
+    
+    default:
+        return &amp;quot;(unrecognized error)&amp;quot;;
+    }
+}
+
+const FlightsErrCategory theFlightsErrCategory {};
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Function name provides a short text that is used while streaming out an std::error_code into things like logs: it can help you identify the cause of an error. It does not have to be unique across all different error enums: in the worst case log entries will be ambiguous.&lt;/p&gt;
+&lt;p&gt;Function message provides a descriptive message for any numeric value representing an error in our category. This can be helpful in debugging or browsing logs; but you would probably not want to give this text to the users unprocessed. These messages are close to the comments I initially put in the definition of FlightsErrc.&lt;/p&gt;
+&lt;p&gt;This function is usually called indirectly. The callers cannot know that the numeric error value is a FlightsErrc, so we have to explicitly cast it back to FlightsErrc. I believe the example in the &lt;a href=&quot;http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-4.html&quot;&gt;aforementioned article&lt;/a&gt; does not compile due to the omitted static&lt;em&gt;cast. Now after the cast, there is a risk that we will be inspecting a value from outside the enumerated set: therefore we need the default label. (Interestingly, whenever I decide to use enum class in my programs, I immediately find myself in need of static&lt;/em&gt;casting it either to or from int.)&lt;/p&gt;
+&lt;p&gt;Finally, note that we have initialized a global object of our type FlightsErrCategory. This will be the only object of this type in the program. We will need its address (to tell error_codes from different domains), but also we will use its polymorphic properties.&lt;/p&gt;
+&lt;p&gt;Although class std::error_category is not a literal type, it has a constexpr default constructor. The implicitly declared default constructor of our class FlightsErrCategory inherits this constexpr-ness. Thus, we are guaranteed that the initialization of our global object is performed during constant initialization, as described in this &lt;a href=&quot;https://akrzemi1.wordpress.com/2012/05/27/constant-initialization/&quot;&gt;post&lt;/a&gt;, and is therefore free from any &lt;a href=&quot;https://isocpp.org/wiki/faq/ctors#static-init-order&quot;&gt;static initialization order fiasco&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Now, the last missing part is implementing &lt;em&gt;make&lt;em&gt;error&lt;/em&gt;code&lt;/em&gt;:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;std::error_code make_error_code(FlightsErrc e)
+{
+    return {static_cast&amp;lt;int&amp;gt;(e), theFlightsErrCategory};
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And we are done. Our FlightsErrc can be used as if it was an std::error_code:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;int main()
+{
+    std::error_code ec = FlightsErrc::NoFlightsFound;
+    std::cout &amp;lt;&amp;lt; ec &amp;lt;&amp;lt; std::endl;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The following program will output:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;flights:20&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;A full working example illustrating all the above can be found &lt;a href=&quot;https://akrzemi1.wordpress.com/examples/error_code-example/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;And that’s it for today. What we have still not covered is how to make useful queries on std::error_code objects, but this will be the subject of another post.&lt;/p&gt;
+&lt;h2&gt;Acknowledgements&lt;/h2&gt;
+&lt;p&gt;I am grateful to Tomasz Kamiński for explaining to me the idea behind std::error&lt;em&gt;code. Apart form Christopher Kohlhoff’s series of posts, I was also able to learn about std::error&lt;/em&gt;code form the documentation of Niall Douglas’s &lt;a href=&quot;https://github.com/ned14/outcome&quot;&gt;Outcome library&lt;/a&gt;, &lt;a href=&quot;https://ned14.github.io/outcome/tutorial/error_code/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Andrzej &lt;a href=&quot;https://akrzemi1.wordpress.com/2017/07/12/your-own-error-code/&quot;&gt;https://akrzemi1.wordpress.com/2017/07/12/your-own-error-code/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[LevelDB日知录]]></title><description><![CDATA[初识LevelDB 说起LevelDb也许您不清楚，但是如果作为IT工程师，不知道下面两位大神级别的工程师，那您的领导估计会Hold不住了：Jeff Dean和Sanjay Ghemawat。这两位是Google公司重量级的工程师，为数甚少的Google Fellow…]]></description><link>https://griddy.netlify.com//blog/leveldb/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/leveldb/</guid><pubDate>Sun, 03 Nov 2019 21:39:06 GMT</pubDate><content:encoded>&lt;h2&gt;初识LevelDB&lt;/h2&gt;
 &lt;p&gt;说起LevelDb也许您不清楚，但是如果作为IT工程师，不知道下面两位大神级别的工程师，那您的领导估计会Hold不住了：Jeff Dean和Sanjay Ghemawat。这两位是Google公司重量级的工程师，为数甚少的Google Fellow之二。&lt;/p&gt;
 &lt;p&gt;Jeff Dean其人：&lt;a href=&quot;http://research.google.com/people/jeff/index.html&quot;&gt;http://research.google.com/people/jeff/index.html&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Google大规模分布式平台Bigtable和MapReduce主要设计和实现者。&lt;/p&gt;
@@ -321,4 +552,804 @@
 &lt;li&gt;几年前还有一个热烈争论，就是Java和C#之争。现在实际上尘埃已经落定，两个语言的定位已经分道扬镳。Java实际上已经落实了成为系统语言的诺言，在现在的计算机体系结构上，Java与15年前的C一样，可以成为构造基础设施的利器，而且其性能相当不错，完全突破了之前人们对虚拟机语言的认识局限性。我相信在未来，Java将有效地侵蚀&lt;a href=&quot;http://lib.csdn.net/base/c&quot;&gt;C语言&lt;/a&gt;的一些曾经以为千秋万代永不变色的地盘。虽然同时Java也在向上发展，但是其力度与C#不可同日而语。相反，C#主要是在往上发展，即将成为超级瑞士军刀，微软版十全大补膏，所有于应用开发有意义的特性都要加上，从编程语言发展来看，它将成为一株奇葩。作为一个编程语言的爱好者，我正饶有兴致地注视着史上特性最丰富语言C#的发展动向。但是，不得不指出，C#的弱点在脚跟。自从用它开发Longhorn Avalon失败以后，微软暂时放弃了让C#成为系统语言的努力，专心专意让C#变成应用开发领域的超级无敌霸王3000，而在核心领域，仍然是C++、COM当关。这就出现了有趣的局面，在可见的未来，微软体系内真正的核心软件基础设施，还是将由微软自己用C++来构造，而组合装配的应用开发，则由C#完成。VB和CLR平台上的其他动态语言都不会有太多机会，因为C#将穷尽神智正常者一切关于语言的幻想。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;以上几点，如果有人现在要选择技术路线，可以参考一下。但切记，技术路线的选择重要，但不具有决定意义。&lt;/p&gt;
-&lt;p&gt;孟岩 &lt;a href=&quot;http://blog.csdn.net/myan/article/details/3247071&quot;&gt;http://blog.csdn.net/myan/article/details/3247071&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Alex and Seira]]></title><description><![CDATA[Here is Alex with my OC who called Seira.]]></description><link>https://griddy.netlify.com//gallery/Alex-and-seira/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/Alex-and-seira/</guid><pubDate>Wed, 12 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;Here is &lt;a href=&quot;https://www.artstation.com/artwork/oOBlXk&quot;&gt;Alex&lt;/a&gt; with my OC who called Seira.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Alex | Fanart]]></title><description><![CDATA[Here's fanart of Alex, an original character by Fanisyah Aurellia.]]></description><link>https://griddy.netlify.com//gallery/Alex-Fanart/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/Alex-Fanart/</guid><pubDate>Tue, 11 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;Here&apos;s fanart of Alex, an original character by &lt;a href=&quot;https://www.artstation.com/fanisyahaurellia&quot;&gt;Fanisyah Aurellia&lt;/a&gt;. &lt;/p&gt;</content:encoded></item><item><title><![CDATA[Mira]]></title><description><![CDATA[Mira is a fantasy place that i create for my comic project long time ago. It's a planet from another dimension that has three satelites. In…]]></description><link>https://griddy.netlify.com//gallery/mira/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/mira/</guid><pubDate>Mon, 10 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;Mira is a fantasy place that i create for my comic project long time ago. It&apos;s a planet from another dimension that has three satelites. In fact, it&apos;s connected with the earth, the world as we know &quot;the astral world&quot;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Free Palestine]]></title><description><![CDATA[It's not about religion, it's about humanity]]></description><link>https://griddy.netlify.com//gallery/free-palestine/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/free-palestine/</guid><pubDate>Sun, 09 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;It&apos;s not about religion, it&apos;s about humanity&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Wahyu]]></title><description><![CDATA[Here's the first commission that i take from my friend, Wahyu]]></description><link>https://griddy.netlify.com//gallery/wahyu/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/wahyu/</guid><pubDate>Fri, 07 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;Here&apos;s the first commission that i take from my friend, Wahyu&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Stylized Portrait | Tribute to Razan al-Najjar]]></title><description><![CDATA[This is my tribute to Razan al-Najjar, a Palestinian nurse volunteering in the Gaza health ministry that died by gunshot on 1 June 201…]]></description><link>https://griddy.netlify.com//gallery/stylized-portrait-tribute-to-razan-al-najjar/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/stylized-portrait-tribute-to-razan-al-najjar/</guid><pubDate>Sat, 27 Oct 2018 00:26:47 GMT</pubDate><content:encoded>&lt;p&gt;This is my tribute to Razan al-Najjar, a Palestinian nurse volunteering in the Gaza health ministry that died by gunshot on 1 June 2018 (aged 21)&lt;/p&gt;</content:encoded></item></channel></rss>
+&lt;p&gt;孟岩 &lt;a href=&quot;http://blog.csdn.net/myan/article/details/3247071&quot;&gt;http://blog.csdn.net/myan/article/details/3247071&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Alex and Seira]]></title><description><![CDATA[Here is Alex with my OC who called Seira.]]></description><link>https://griddy.netlify.com//gallery/Alex-and-seira/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/Alex-and-seira/</guid><pubDate>Wed, 12 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;Here is &lt;a href=&quot;https://www.artstation.com/artwork/oOBlXk&quot;&gt;Alex&lt;/a&gt; with my OC who called Seira.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Alex | Fanart]]></title><description><![CDATA[Here's fanart of Alex, an original character by Fanisyah Aurellia.]]></description><link>https://griddy.netlify.com//gallery/Alex-Fanart/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/Alex-Fanart/</guid><pubDate>Tue, 11 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;Here&apos;s fanart of Alex, an original character by &lt;a href=&quot;https://www.artstation.com/fanisyahaurellia&quot;&gt;Fanisyah Aurellia&lt;/a&gt;. &lt;/p&gt;</content:encoded></item><item><title><![CDATA[Mira]]></title><description><![CDATA[Mira is a fantasy place that i create for my comic project long time ago. It's a planet from another dimension that has three satelites. In…]]></description><link>https://griddy.netlify.com//gallery/mira/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/mira/</guid><pubDate>Mon, 10 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;Mira is a fantasy place that i create for my comic project long time ago. It&apos;s a planet from another dimension that has three satelites. In fact, it&apos;s connected with the earth, the world as we know &quot;the astral world&quot;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Free Palestine]]></title><description><![CDATA[It's not about religion, it's about humanity]]></description><link>https://griddy.netlify.com//gallery/free-palestine/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/free-palestine/</guid><pubDate>Sun, 09 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;It&apos;s not about religion, it&apos;s about humanity&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Wahyu]]></title><description><![CDATA[Here's the first commission that i take from my friend, Wahyu]]></description><link>https://griddy.netlify.com//gallery/wahyu/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/wahyu/</guid><pubDate>Fri, 07 Jun 2019 19:21:41 GMT</pubDate><content:encoded>&lt;p&gt;Here&apos;s the first commission that i take from my friend, Wahyu&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Jaeger： 开源、端到端的分布式追踪系统]]></title><description><![CDATA[背景：互联网的后台架构不断在演变，从单体应用到SOA，从SOA到微服务（从微服务再到Serverless）。采用微服务架构后，应用从原来的单体结构转变成了多个微服务相互协作的分布式架构，而运维和调试一个分布式应用相比单体应用的难度通常有数量级上的差异。 Jaeger是Uber…]]></description><link>https://griddy.netlify.com//blog/jaeger/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/jaeger/</guid><pubDate>Thu, 27 Dec 2018 22:16:36 GMT</pubDate><content:encoded>&lt;p&gt;背景：互联网的后台架构不断在演变，从单体应用到SOA，从SOA到微服务（从微服务再到Serverless）。采用微服务架构后，应用从原来的单体结构转变成了多个微服务相互协作的分布式架构，而运维和调试一个分布式应用相比单体应用的难度通常有数量级上的差异。&lt;/p&gt;
+&lt;p&gt;Jaeger是Uber开源的一个分布式追踪系统，受到了Dapper（Google）和 OpenZipkin（Twitter）的启发，用于对基于微服务的分布式系统进行监控和故障排查。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h5&gt;Traditional monitoring tools such as metrics and distributed logging still have their place, but they often fail to provide visibility across services. This is where distributed tracing thrives.&lt;/h5&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;传统的指标和日志：仍然扮演重要角色，主要用于&lt;strong&gt;服务内&lt;/strong&gt;
+分布式追踪的作用：提供&lt;strong&gt;跨服务&lt;/strong&gt;的可见性，端到端的追踪&lt;/p&gt;
+&lt;p&gt;尝试解决什么问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;分布式上下文的传递/传播（&lt;strong&gt;distributed context&lt;/strong&gt; propagation）&lt;/li&gt;
+&lt;li&gt;分布式事务监控（distributed transaction monitoring）&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;根因分析&lt;/strong&gt;（root cause analysis）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;LA 和 DomainServer配合&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;服务依赖分析（service dependency analysis）&lt;/li&gt;
+&lt;li&gt;性能和延时优化（performance and latency optimization)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;特性：&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Opentracing兼容的数据模型和标记库（提供Go、Java、Node、Python和&lt;strong&gt;C++ 客户端&lt;/strong&gt;实现）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Opentracing 数据模型&lt;/strong&gt;（相当于 SamplingEngine 定义的数据结构和埋点 API ）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;不同服务可设置不同的采样率（Uses consistent upfront sampling with individual per service/endpoint probabilities）&lt;/li&gt;
+&lt;li&gt;支持多个存储后端：&lt;strong&gt;Cassandra&lt;/strong&gt;、ElasticSearch、memory&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;适应性采样（coming soon）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据（收集后）处理流水线（coming soon）&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Opentracing规范&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/opentracing/specification/blob/master/specification.md&quot;&gt;https://github.com/opentracing/specification/blob/master/specification.md&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;主要包括两个部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据模型的定义，规范语义&lt;/li&gt;
+&lt;li&gt;提供9种语言的API接口层，C++ 以动态库的形式提供了一个接口层，具体实现（如Jaeger的C++客户端）实现这些接口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;The OpenTracing Data Model&lt;/h3&gt;
+&lt;p&gt;核心抽象： Tracer，Span，SpanContext，Reference&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Traces&lt;/strong&gt; in OpenTracing are defined implicitly by their &lt;strong&gt;Spans&lt;/strong&gt;. In particular, a &lt;strong&gt;Trace&lt;/strong&gt; can be thought of as a directed acyclic graph (DAG) of &lt;strong&gt;Spans&lt;/strong&gt;, where the edges between &lt;strong&gt;Spans&lt;/strong&gt; are called &lt;strong&gt;References&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Span从字面理解就是一个跨度，具体在追踪语境下指的是&lt;strong&gt;时间上的跨度&lt;/strong&gt;。Span是为描述请求/应答模型量身定制的，一个Span封装了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;操作名称：e.g. RPC调用名；http请求的URL/endpoint；SQL语句等等&lt;/li&gt;
+&lt;li&gt;操作起始时间戳&lt;/li&gt;
+&lt;li&gt;耗时（duration）：Span名称的由来&lt;/li&gt;
+&lt;li&gt;Tags: 一系列key-value对，描述整个Span的属性，比如RPC调用的参数，http请求参数等等&lt;/li&gt;
+&lt;li&gt;Logs: 带时间戳的key-value对，描述在某个时刻发生了事情，比如http响应码等等&lt;/li&gt;
+&lt;li&gt;SpanContext: 跨服务间传输的上下文信息，用于关联组成trace的一系列spans，一般包含 trace&lt;em&gt;id、span&lt;/em&gt;id, baggage；最重要的就是trace_id&lt;/li&gt;
+&lt;li&gt;References: span之间的引用关系，目前定义了两种，ChildOf 和 FollowsFrom&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For example, the following is an example &lt;strong&gt;Trace&lt;/strong&gt; made up of 8 &lt;strong&gt;Spans&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Causal relationships between Spans in a single Trace
+
+
+        [Span A]  ←←←(the root span)
+            |
+     +------+------+
+     |             |
+ [Span B]      [Span C] ←←←(Span C is a `ChildOf` Span A)
+     |             |
+ [Span D]      +---+-------+
+               |           |
+           [Span E]    [Span F] &amp;gt;&amp;gt;&amp;gt; [Span G] &amp;gt;&amp;gt;&amp;gt; [Span H]
+                                       ↑
+                                       ↑
+                                       ↑
+                         (Span G `FollowsFrom` Span F)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Span之间的关系&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;ChildOf&lt;/p&gt;
+&lt;p&gt;指的是，Parent Span的完成依赖于Child Span的完成。典型场景，前端的一次 http 请求引发后端多个组件的多个动作，每个动作都可以是一个Span，这些Span和前端http请求Span的关系就是ChildOf的，因为只有后端完成之后，才会返回http响应。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;FollowsFrom&lt;/p&gt;
+&lt;p&gt;Parent Span的完成不依赖Child Span的完成。这个关系表达的仅仅是因果关系，即Child Span是由Parent Span引发的，Parent Span的完成不需要等待Child Span的完成，也就是没形成一个回路。（we say merely that the child Span &lt;code class=&quot;language-text&quot;&gt;FollowsFrom&lt;/code&gt; the parent Span in a causal sense. )&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;（LA中TraceRecord 中表达的parent关系，按照这个定义归属于FollowsFrom）&lt;/p&gt;
+&lt;h3&gt;Trace由Span来表达和定义&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A &lt;strong&gt;trace&lt;/strong&gt; is a data/execution path through the system, and can be thought of as a directed acyclic graph of &lt;a href=&quot;https://www.jaegertracing.io/docs/1.8/architecture#span&quot;&gt;spans&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;The OpenTracing API&lt;/h3&gt;
+&lt;p&gt;C++：以动态库的形式提供接口层，具体Tracer实现（Jaeger的C++客户端）提供实现，对接对应的后端组件。定义了三个相互关联的关键抽象Tracer、Span、SpanContext&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Tracer （存在于应用侧，指应用看到的负责保存Span的Client Library中的对象）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Start a new Span&lt;/li&gt;
+&lt;li&gt;Inject a SpanContext into a carrier (http header, RPC frame)&lt;/li&gt;
+&lt;li&gt;Extrace a SpanContext from a carrier (http header, RPC frame)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Span&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Retrieve the SpanContext&lt;/li&gt;
+&lt;li&gt;Finish the Span（完成时间戳）&lt;/li&gt;
+&lt;li&gt;Set a Span Tags&lt;/li&gt;
+&lt;li&gt;Log structured data&lt;/li&gt;
+&lt;li&gt;Set a baggage item（保存在SpanContext上下文中，随请求在服务间传递， context propagation）&lt;/li&gt;
+&lt;li&gt;Get a baggage item&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;SpanContext&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Iterate through all baggage items&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;架构&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://eng.uber.com/distributed-tracing/&quot;&gt;https://eng.uber.com/distributed-tracing/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这篇文章给出了 Jaeger 系统架构的演变，讲述了 Uber 分布式追踪工具的发展时间线：从单体应用的追踪系统到基于微服务应用的分布式跟踪，从最初采用 Zipkin 数据模型以及部分组件到逐步开发出 Jaeger 的过程。Uber根据自己的实际情况，重新设计了数据模型，开发了新的 Client 库和相关后端组件。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 720px;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 53.68468066100939%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAAsSAAALEgHS3X78AAACkUlEQVQoz0WSyW/TYBDF/Udy4IpAooDggkAcECcQ5QCiHEBICFHKKlHEUkHZUelGQtPQuDRN6iw4JqtdJ/ESx8uPScoy0mhG+uZ7M/PmKY7jUCqVqFarVCoVoihiZEmSjOMXtYzRtvF9H7NrjR4Iw5DyzzLtVoO2F3J+qYzpDcf1imma5PN5isUiOzsaoQCOwcRHUd2pYpo9ksAjGNiMn+IY07bw3D5tN+SjZtEP9gZRLMtC13UMw8Co1djdtbFtezxFEu9NOeo9kHQQJcR/Jh9ZLO4OQ6IkxpX6SOoVu+vSLt5GTx2luHiCbv4sVmtbVpcJ5cvFdI5DrxeYmF/g1HKWhuv9A5w32hz5lOLw7CuOr+bIml0UxxtQW3pG/v4FNh9Mos1eoaNreF6CZUdMqhoH3y4x8W6Z05k8tV7/H2A3GGI4LpW2KdHDCyMUz3NZ/LzN47tpnjz8xuzDNVm9gdmJ+a5GTKslruUK3MgVmcrm0W3h88/h8l2H6dw2M2sbzGxp6K6PEjh9ptMFjr1McXLuK2feZynUm/hORMeOOZctsm/uE/vFj6W3qPUd4XYPMNOxubpR4OpKhqlNjZ1uH2XQbDKXUZlcWeeScHR5bZvCrzbhIBKyE2bLBlPLa1xbTHFPq8k1Q7nGiN+/9j8bX9lttdCLGgWtxOpGnc+rDcqVXQZ+SBz/Packwz2dBUMPx+/hSwyGgcgs/o8Wysp+p8Mt4ejAm0UOPZ3nZEolV2uJ5mQKKU5GcggC8AOMns6jlVvceXudB0s32ap/x+27bP7YQs1mqH55gTKUzqbw0hSyW5WftIw6Tr1BInqk2SIxfpGI+JFVd32LD+pLnq8+4nX2KY1ejUAapdNp1jPr6KLj3/KQHwqAlR7OAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;architecture&quot;
+        title=&quot;architecture&quot;
+        src=&quot;/static/f671cb89ab5946b181443c53962cfa2f/6da3e/architecture.png&quot;
+        srcset=&quot;/static/f671cb89ab5946b181443c53962cfa2f/b059c/architecture.png 180w,
+/static/f671cb89ab5946b181443c53962cfa2f/8f8c6/architecture.png 360w,
+/static/f671cb89ab5946b181443c53962cfa2f/6da3e/architecture.png 720w,
+/static/f671cb89ab5946b181443c53962cfa2f/e9c61/architecture.png 1080w,
+/static/f671cb89ab5946b181443c53962cfa2f/8d0ff/architecture.png 1440w,
+/static/f671cb89ab5946b181443c53962cfa2f/ab1b9/architecture.png 2239w&quot;
+        sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;instrumentation side&lt;/strong&gt;: 开发新的Client库，遵循OpenTracing的语义规范&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;jaeger-client：多种语言实现，保证互操作性（consistent instrumentation API in different languages）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;backend side 后端组件&lt;/strong&gt;：agent + collector + Cassandra + query + UI&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;agent：network daemon，作为基础设施组件部署在host上，收集spans发送到collector，agent屏蔽了collector的发现和路由&lt;/li&gt;
+&lt;li&gt;collector：部署多个组成cluster，从agent收集span，进行一些校验等处理，最终写入数据库&lt;/li&gt;
+&lt;li&gt;Cassandra：数据库存储集群&lt;/li&gt;
+&lt;li&gt;query：a &lt;strong&gt;web server&lt;/strong&gt; that retrieves traces from storage and hosts a UI to display them&lt;/li&gt;
+&lt;li&gt;UI：Web UI（search功能）&lt;/li&gt;
+&lt;li&gt;Apache Spark：数据处理 pipeline（对收集到数据做进一步的加工）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Control flow（创新点）&lt;/strong&gt;：控制采样率，由后端根据当前的压力决定，可动态调整（创新点）；Jaeger client samples 0.1% of traces (1 in 1000)——默认1/1000的采样率&lt;/p&gt;</content:encoded></item><item><title><![CDATA[泛型编程：源起、实现与意义]]></title><description><![CDATA[为什么泛型 泛型编程（Generic Programming）最初提出时的动机很简单直接：发明一种语言机制，能够帮助实现一个通用的标准容器库。所谓通用的标准容器库，就是要能够做到，比如用一个List…]]></description><link>https://griddy.netlify.com//blog/cpp-generic/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/cpp-generic/</guid><pubDate>Sun, 11 Nov 2018 00:42:29 GMT</pubDate><content:encoded>&lt;h2&gt;为什么泛型&lt;/h2&gt;
+&lt;p&gt;泛型编程（Generic Programming）最初提出时的动机很简单直接：发明一种语言机制，能够帮助实现一个通用的标准容器库。所谓通用的标准容器库，就是要能够做到，比如用一个List类存放所有可能类型的对象,这样的事情；熟悉一些其它面向对象的语言的人应该知道，如Java里面这是通过在List里面存放Object引用来实现的。Java的单根继承在这里起到了关键的作用。然而单根继承对C++这样的处在语言链底层的语言却是不能承受之重。此外使用单根继承来实现通用容器也会带来效率和类型安全方面的问题，两者都与C++的理念不相吻合。&lt;/p&gt;
+&lt;p&gt;于是C++另谋他法——除了单根继承之外，另一个实现通用容器的方案就是使用“参数化类型”。一个容器需要能够存放任何类型的对象，那干脆就把这个对象的类型“抽”出来，参数化它&lt;sup id=&quot;fnref-1&quot;&gt;&lt;a href=&quot;#fn-1&quot; class=&quot;footnote-ref&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;cpp&quot;&gt;&lt;pre class=&quot;language-cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;vector&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    T&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; v&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; sz&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    T&lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;operator&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    T&lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;elem&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; i&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; v&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;一般来说看到这个定义的时候，每个人都会想到C的宏。的确，模板和宏在精神上的确有相仿之处。而且的确，也有人使用C的宏来实现通用容器。模板是将一个定义里面的类型参数化出来，而宏也可以做到参数化类型。甚至某种意义上可以说宏是模板的超集——因为宏不仅可以参数化类型，宏实质上可以参数化一切文本，因为它本来就是一个文本替换工具。然而，跟模板相比，宏的最大的缺点就是它并不工作在C++的语法解析层面，宏是由预处理器来处理的，而在预处理器的眼里没有C++，只有一堆文本，因此C++的类型检查根本不起作用。比如上面的定义如果用宏来实现，那么就算你传进去的T不是一个类型，预处理器也不会报错；只有等到文本替换完了，到C++编译器工作的时候才会发现一堆莫名其妙的类型错误，但那个时候错误就已经到处都是了。往往最后会抛出一堆吓人的编译错误。更何况宏基本无法调试。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注1&lt;/p&gt;
+&lt;p&gt;实际上，还有一种实现通用容器的办法。只不过它更糟糕：它要求任何能存放在容器内的类型都继承自一个NodeBase，NodeBase里面有pre和next指针，通过这种方式，就可以将任意类型链入一个链表内了。但这种方式的致命缺点是(1)它是侵入性的，每个能够放在该容器内的类型都必须继承自NodeBase基类。(2)它不支持基本内建类型（int、double等），因为内建类型并不，也不能继承自NodeBase。这还姑且不说它是类型不安全的，以及效率问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我们再来看一看通用算法，这是泛型的另一个动机。比如我们熟悉的C的qsort：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c&quot;&gt;&lt;pre class=&quot;language-c&quot;&gt;&lt;code class=&quot;language-c&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;qsort&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;base&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; size_t nmemb&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; size_t size&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;compare&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这个算法有如下几个问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;类型安全性：使用者必须自行保证base指向的数组的元素类型和compare的两个参数的类型是一致的；使用者必须自行保证size必须是数组元素类型的大小。&lt;/li&gt;
+&lt;li&gt;通用性：qsort对参数数组的二进制接口有严格要求——它必须是一个内存连续的数组。如果你实现了一个巧妙的、分段连续的自定义数组，就没法使用qsort了。&lt;/li&gt;
+&lt;li&gt;接口直观性：如果你有一个数组char* arr = new arr[10];那么该数组的元素类型其实就已经“透露”了它自己的大小。然而qsort把数组的元素类型给“void”掉了（void *base），于是丢失掉了这一信息，而只能让调用方手动提供一个size。为什么把数组类型声明为void*？因为除此之外别无它法，声明为任意一个类型的指针都不妥（compare的参数类型也是如此）。qsort为了通用性，把类型信息丢掉了，进而导致了必须用额外的参数来提供类型大小信息。在这个特定的算法里问题还不明显，毕竟只多一个size参数而已，但一旦涉及的类型信息多了起来，其接口的可伸缩性（scalability）问题和直观性问题就会逐渐显现。&lt;/li&gt;
+&lt;li&gt;效率：compare是通过函数指针调用的，这带来了一定的开销。但跟上面的其它问题比起来这个问题还不是最严重的。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;&lt;strong&gt;泛型编程&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;泛型编程最初诞生于C++中，由Alexander Stepanov&lt;sup id=&quot;fnref-2&quot;&gt;&lt;a href=&quot;#fn-2&quot; class=&quot;footnote-ref&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;和David Musser&lt;sup id=&quot;fnref-3&quot;&gt;&lt;a href=&quot;#fn-3&quot; class=&quot;footnote-ref&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;创立。目的是为了实现C++的STL（标准模板库）。其语言支持机制就是模板（Templates）。模板的精神其实很简单：参数化类型。换句话说，把一个原本特定于某个类型的算法或类当中的类型信息抽掉，抽出来做成模板参数T。比如qsort泛化之后就变成了：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;cpp&quot;&gt;&lt;pre class=&quot;language-cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;RandomAccessIterator&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Compare&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; 
+&lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;sort&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;RandomAccessIterator first&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; RandomAccessIterator last&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; Compare comp&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;其中first，last这一对迭代器代表一个前闭后开区间，迭代器和前开后闭区间都是STL的核心概念。迭代器建模的是内建指针的接口（解引用、递增、递减等）、前开后闭区间是一个简单的数学概念，表示从first（含first）到last（不含last）的区间内的所有元素。此外，comp是一个仿函数（functor）。仿函数也是STL的核心概念，仿函数建模的是内建函数的接口，一个仿函数可以是一个内建的函数，也可以是一个重载了operator()的类对象，只要是支持函数调用的语法形式就可成为一个仿函数。&lt;/p&gt;
+&lt;p&gt;通过操作符重载，C++允许了自定义类型具有跟内建类型同样的使用接口；又通过模板这样的参数化类型机制，C++允许了一个算法或类定义，能够利用这样的接口一致性来对自身进行泛化。例如，一个原本操作内建指针的算法，被泛化为操纵一切迭代器的算法。一个原本使用内建函数指针的算法，被泛化为能够接受一切重载了函数调用操作符（operator()）的类对象的算法。&lt;/p&gt;
+&lt;p&gt;让我们来看一看模板是如何解决上面所说的qsort的各个问题的：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;类型安全性：如果你调用std::sort(arr, arr + n, comp);那么comp的类型就必须要和arr的数组元素类型一致，否则编译器就会帮你检查出来。而且comp的参数类型再也不用const void*这种不直观的表示了，而是可以直接声明为对应的数组元素的类型。&lt;/li&gt;
+&lt;li&gt;通用性：这个刚才已经说过了。泛型的核心目的之一就是通用性。std::sort可以用于一切迭代器，其compare函数可以是一切支持函数调用语法的对象。如果你想要将std::sort用在你自己的容器上的话，你只要定义一个自己的迭代器类（严格来说是一个随机访问迭代器，STL对迭代器的访问能力有一些分类，随机访问迭代器具有建模的内建指针的访问能力），如果需要的话，再定义一个自己的仿函数类即可。&lt;/li&gt;
+&lt;li&gt;接口直观性：跟qsort相比，std::sort的使用接口上没有多余的东西，也没有不直观的size参数。一个有待排序的区间，一个代表比较标准的仿函数，仅此而已&lt;sup id=&quot;fnref-4&quot;&gt;&lt;a href=&quot;#fn-4&quot; class=&quot;footnote-ref&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;。&lt;/li&gt;
+&lt;li&gt;效率：如果你传给std::sort的compare函数是一个自定义了operator()的仿函数。那么编译器就能够利用类型信息，将对该仿函数的operatpr()调用直接内联。消除函数调用开销。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;&lt;strong&gt;动态多态与静态多态&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;泛型编程的核心活动是抽象：将一个特定于某些类型的算法中那些类型无关的共性抽象出来，比如，在STL的概念体系里面，管你是一个数组还是一个链表，反正都是一个区间，这就是一层抽象。管你是一个内建函数还是一个自定义类，反正都是一个Callable（可调用）的对象（在C++里面通过仿函数来表示），这就是一层抽象。泛型编程的过程就是一个不断将这些抽象提升（lift）出来的过程，最终的目的是形成一个最大程度上通用的算法或类。&lt;/p&gt;
+&lt;p&gt;有人肯定会问，既然同是抽象，那为什么不用基于多态的面向对象抽象呢？比如STL的std::for_each，用Java的多态机制也可以解决：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;IUnaryFun&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;invoke&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Object&lt;/span&gt; o&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;IInputIter&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token class-name&quot;&gt;IInputIter&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;preIncrement&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;IInputIter&lt;/span&gt; otherIter&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// other methods&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token class-name&quot;&gt;IUnaryFun&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;for_each&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;IInputIter&lt;/span&gt; first&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;IInputIter&lt;/span&gt; last&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;IUnaryFun&lt;/span&gt; func&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;first&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;last&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; first&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;preIncrement&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+   		func&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;invoke&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;first&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; func&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;其实，这里最主要的原因很简单，效率。面向对象的多态引入了间接调用。当然，并不是说间接调用不好，有些时候，比如确实需要运行期多态的时候，只能诉诸继承这样的手段。但当能够利用编译期类型信息的时候，为什么要付出不必要的间接调用开销呢？比如这里的for_each，利用接口来实现其通用性，就付出了所谓的“抽象惩罚”（abstraction penalty）。而C++的模板，就是为了消除这样的抽象惩罚。利用模板编写的std::for_each，对于每一个特定的参数类型组合都有一个独立的，最高效的实例化版本，就跟你手写一个特定于这些类型的专门的for_each算法一样&lt;sup id=&quot;fnref-5&quot;&gt;&lt;a href=&quot;#fn-5&quot; class=&quot;footnote-ref&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;。于是抽象惩罚消失了，而这也正是C++模板库能够真正被工业界广泛用在C++最擅长的领域（重视效率的领域）的重要原因之一。&lt;/p&gt;
+&lt;p&gt;另一方面，对于每一组参数类型组合实例化一个版本出来的做法增加了代码空间，这是一个典型的以空间换时间的例子，不过对于一门静态并追求效率的语言来说，这个代码空间的开销反正也是必不可少的，因为即便你手动为各种不同的参数类型组合编写特定的算法版本的话，也是付出一样的代码空间开销，而且还顺便违反了DRY原则&lt;sup id=&quot;fnref-6&quot;&gt;&lt;a href=&quot;#fn-6&quot; class=&quot;footnote-ref&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;。此外，由于在抽象的时候不用总想着要建立的接口，所以泛型算法编写起来也更为直观。&lt;/p&gt;
+&lt;p&gt;C++泛型的另一个好处就是，跟面向对象编程的基于继承和虚函数的运行时多态机制不同，C++模板是非侵入性的。你不需要让你的类继承自某个特定的接口才能用于某个算法，只要支持特定的语法接口就行了（比如只要支持begin()调用）。这也被称为结构一致性（Structural Conformance），意即只要语法结构一致即可。而另一方面，基于接口继承的面向对象多态则必须要显式地声明继承自一个接口，这就是所谓的名字一致性（Named Conformance）。&lt;/p&gt;
+&lt;p&gt;当然，泛型支持的静态多态和虚函数支持的动态多态并没有任何程度上绝对的优劣之分。它们适用于不同的场合。当类型信息可得的时候，利用编译期多态能够获得最大的效率和灵活性。当具体的类型信息不可得，就必须诉诸运行期多态了。Bjarne Stroustrup曾经用了一个典型的例子来澄清这个区别：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;cpp&quot;&gt;&lt;pre class=&quot;language-cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;std&lt;span class=&quot;token operator&quot;&gt;::&lt;/span&gt;vector&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Shape&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; v&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+… &lt;span class=&quot;token comment&quot;&gt;// fill v&lt;/span&gt;
+std&lt;span class=&quot;token operator&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;for_each&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;v&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; v&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; std&lt;span class=&quot;token operator&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;mem_fun&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;Shape&lt;span class=&quot;token operator&quot;&gt;::&lt;/span&gt;draw&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这里，v里面到底将来会存放什么类型的Shape，编译期无法知道，因而必须求助于动态多态。另一方面，编译器倒的确知道它们都继承自Shape，利用这仅有的静态类型信息，我们使用了泛型算法std::for_each和泛型容器std::vector。这里尤其值得注意的是for_each的静态多态行为：for_each只有一份模板实现，然而根据传给它的第三个参数（本例中是std::mem_fun(&amp;#x26;Shape::draw)）的不同，for_each的行为也不同（这里最终被for_each调用的是Shape::draw，但实际上你可以包装任何函数，只要这个函数接受一个Shape*型的参数），for_each这种“行为不同”是发生在编译期的，所以是静态多态。&lt;/p&gt;
+&lt;p&gt;前面说过，模板与接口继承比较，模板是非侵入的。这是C++泛型与面向对象的多态机制的本质区别之一。但实际上，面向对象未必就意味着一定要用接口来实现动态的多态。一些动态类型的脚本语言，如Ruby，它的多态机制就既是运行期（动态）的，又是非倾入性的（不用通过继承自某个特定的接口来达到复用）。人们把这个叫做Duck Typing&lt;sup id=&quot;fnref-7&quot;&gt;&lt;a href=&quot;#fn-7&quot; class=&quot;footnote-ref&quot;&gt;7&lt;/a&gt;&lt;/sup&gt;。如果不是因为效率问题，其实这样的多态机制才是最直观的，从使用方面来说，它既有非侵入性，又没有只能工作在编译期的限制。但效率至少在可见的将来、在某些领域仍是一个顾虑。因此像C++这种区分编译期和运行期多态的语言，仍有其独特的优势。&lt;/p&gt;
+&lt;p&gt;此外，泛型编程的类型安全优势也让它从C++走入了其它主流的静态类型语言当中，尤其是C家族的Java和C#，在前几年相继接纳泛型。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;特化，图灵完备性，元编程&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;C++的模板是支持特化的，这就给了它实现编译期控制结构的可能性，进而带来了一个图灵完备的子语言。模板特化的引入原本只是为了效率目的——针对不同的类型提供不同的实现。但后来却被发现能够实现编译期的if/else和递归等控制结构。&lt;/p&gt;
+&lt;p&gt;模板元编程最初由Erwin Unruh在1994年的一次会议上提出；当时他写了一个程序，在编译错误里面打印出一个素数序列。这个事件在C++历史上的地位就仿佛哥伦布发现新大陆。用Bjarne Stroustrup的话来说就是当时他和其他几个人觉得太神奇了。实际上，这个事情正标志了C++模板系统的图灵完备性被发现；后来Todd Veldhuizen写了一篇paper，用C++模板构建了一个元图灵机，从而第一次系统证明了C++模板的图灵完备性。接下来的事情就顺理成章了——一些ad hoc的模板元编程技巧不断被发掘出来，用于建造高效、高适应性的通用组件。最终，David Abrahams编写了boost库中的基本组件之一：Boost.MPL库。Boost.MPL以类型和编译期常量为数据，以模板特化为手段，实现了一个编译期的STL。你可以看到常见的vector，你可以看到transform算法，只不过算法操纵的对象和容器存放的对象不再是运行期的变量或对象，而是编译期的类型和常量。想知道模板元编程是如何用在库构建中的，可以打开一个Boost的子库（比如Boost.Tuple或Boost.Variant）看一看。&lt;/p&gt;
+&lt;p&gt;然而，毕竟C++的模板元编程是一门被发现而不是被发明的子语言。一方面，它在构建泛型库的时候极其有用。然而另一方面，由于它并非语言设计初始时考虑在内的东西，所以不仅在语法上面显得不那么first-class（比较笨拙）；更重要的是，由于本不是一个first-class的语言特性，所以C++编译器并不知道C++元编程的存在。这就意味着，比如对下面这样一个编译期的if/else设施&lt;sup id=&quot;fnref-8&quot;&gt;&lt;a href=&quot;#fn-8&quot; class=&quot;footnote-ref&quot;&gt;8&lt;/a&gt;&lt;/sup&gt;：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;template&amp;lt;bool b, class X, class Y&amp;gt;
+struct if_ {
+    typedef X type; // use X if b is true
+};
+
+template&amp;lt;class X, class Y&amp;gt;
+struct if_&amp;lt;false,X,Y&amp;gt; {
+    typedef Y type; // use Y if b is false
+};
+
+typedef if_&amp;lt;(sizeof(Foobar)&amp;lt;40), Foo, Bar&amp;gt;::type type;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;编译器并没有真的去进行if/else的分支选择，而是按部就班毫不知情地进行着模板的特化匹配。如果遇到Boost.MPL这样的模板元编程非常重的库，就会严重拖累编译速度，编译器进行了一重一重的特化匹配，实例化了一个又一个的模板实例，就是为了去获取里面定义的一个typedef，完了之后中间所有实例化出来的模板实例类型全都被丢弃&lt;sup id=&quot;fnref-9&quot;&gt;&lt;a href=&quot;#fn-9&quot; class=&quot;footnote-ref&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;模板元编程最全面深入的介绍是Boost.MPL库的作者David Abrahams的《C++ Template Metaprogramming》，其中的样章（第三章）&lt;sup id=&quot;fnref-10&quot;&gt;&lt;a href=&quot;#fn-10&quot; class=&quot;footnote-ref&quot;&gt;10&lt;/a&gt;&lt;/sup&gt;对模板元编程作了一个非常高屋建瓴的概览&lt;sup id=&quot;fnref-11&quot;&gt;&lt;a href=&quot;#fn-11&quot; class=&quot;footnote-ref&quot;&gt;11&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;关于模板元编程，需要提醒的是，它并不属于“大众技术”。日常编程中极少需要用到元编程技巧。另一方面，C++模板里面有大量ad hoc的技巧，如果一头扎进去的话，很容易只见树木不见森林，所以需要提醒初学者的是，即便要学习，也要时刻保持“高度”，始终记得元编程的意义和目的，这样才不至于迷失在无穷无尽的语言细节中。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;C++09——进化&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;泛型编程在C++中取得了工业程度上的成功，得益于其高效性和通用性。但同时，在经过了近十年的使用之后，C++模板，这个作为C++实现泛型的机制的缺点也逐渐暴露出来。比如其中对于初学者最严重的一个问题就是在使用一个模板库时常常遇到无法理解的编译错误，动辄长达上K字节。这些编译错误很容易把一个初学者吓走。究其本质原因，为什么编译器会报出令人难以卒读的编译错误，是因为在编译器的眼里，只有类型，而没有“类型的类型”。比如说，迭代器就是一个类型的类型，C++里面也把它称为“概念”（Concept）。例如，std::sort要求参数必须是随机访问迭代器，如果你一不小心给了它一个非随机访问的迭代器，那么编译器不是抱怨“嘿！你给我的不是随机访问迭代器”，而是抱怨找不到某某重载操作符（典型的比如operator+(int)）。因为在编译器眼里，没有“迭代器”这么个概念，这个概念只存在于程序员脑子里和STL的文档里。为了帮助编译器产出更友好的信息（当然，还有许多非常重要的其它原因&lt;sup id=&quot;fnref-12&quot;&gt;&lt;a href=&quot;#fn-12&quot; class=&quot;footnote-ref&quot;&gt;12&lt;/a&gt;&lt;/sup&gt;），C++09将对“类型的类型”加入first-class的支持，其带来的众多好处会将C++中的泛型编程带向一个新的高度：更友好、更实用、更直观。&lt;/p&gt;
+&lt;p&gt;此外，C++的模板元编程尚没有first-class的语言支持，一方面是因为其运用不像一般的模板编程这么广泛，因而没有这么紧急。另一方面，C++09的时间表也等不及一个成熟的提案。如果以后模板元编程被运用得越来越广泛的话，那first-class的语言支持是难免的。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;总结&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;本文对C++模板，以及C++模板所支持的泛型编程作了一个概览。着重介绍了泛型编程诞生的原因，泛型编程的过程和意义，与其它抽象手段的比较。并对C++中的模板元编程做了一些介绍。最后介绍了C++模板在C++09中的增强。&lt;/p&gt;
+&lt;p&gt;说明：By 刘未鹏  原文链接：&lt;a href=&quot;http://blog.csdn.net/pongba/article/details/2544894&quot;&gt;http://blog.csdn.net/pongba/article/details/2544894&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn-1&quot;&gt;
+&lt;p&gt;B. Stroustrup: A History of C++: 1979-1991. Proc ACM History of Programming Languages conference (HOPL-2). March 1993.&lt;/p&gt;
+&lt;a href=&quot;#fnref-1&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn-4&quot;&gt;
+&lt;p&gt;实际上，STL的区间概念被证明是一个不完美的抽象。你有没有发现，要传递一个区间给一个函数，如std::sort，你需要传递两个参数，一个是区间的开头，一个是区间的末尾。这种分离的参数传递方式被证明是不明智的，在一些场合会带来使用上不必要的麻烦。比如你想迭代一组文件，代表这组文件的区间由一个readdir_sequence函数返回，由于要分离表达一个区间，你就必须写：readdir_sequence entries(&quot;.&quot;, readdir_sequence::files);  std::for_each(entries.begin(), entries.end(), ::remove); 如果你只想遍历这个区间一次的话，你也许不想声明entries这个变量，毕竟多一个名字就多一个累赘，你也许只想：std::for_each(readdir_sequence(&quot;.&quot;, readdir_sequence::files), ::remove); 下一代C++标准（C++09）会解决这个问题（将区间这个抽象定义为一个整体）。&lt;/p&gt;
+&lt;a href=&quot;#fnref-4&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn-5&quot;&gt;
+&lt;p&gt;当然，语言并没有规定模板实例化的底层实现一定要是对每组参数类型组合实例化一个版本出来。但目前的实现，这种方案是最高效的。完全消除了抽象惩罚。另一方面，One size fit all的方案也不是不可行，但总会有间接调用。这也正说明了静态类型系统的一个典型优点：帮助编译器生成更高效的代码。&lt;/p&gt;
+&lt;a href=&quot;#fnref-5&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn-8&quot;&gt;
+&lt;p&gt;摘自Bjarne Stroustrup的paper：Evolving a language in and for the real world: C++ 1991-2006&lt;/p&gt;
+&lt;a href=&quot;#fnref-8&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn-9&quot;&gt;
+&lt;p&gt;也正因此，D语言加入了语言直接对模板元编程的支持，比如真正工作在编译期的static if-else语句。&lt;/p&gt;
+&lt;a href=&quot;#fnref-9&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn-12&quot;&gt;
+&lt;p&gt;由于篇幅原因，这里无法展开详述Concept对C++泛型编程的其它重要意义，有兴趣的可以参见我的一篇blog：《C++0x漫谈系列之：Concept! Concept!》。http://blog.csdn.net/pongba/archive/2007/08/04/1726031.aspx&lt;/p&gt;
+&lt;a href=&quot;#fnref-12&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Stylized Portrait | Tribute to Razan al-Najjar]]></title><description><![CDATA[This is my tribute to Razan al-Najjar, a Palestinian nurse volunteering in the Gaza health ministry that died by gunshot on 1 June 201…]]></description><link>https://griddy.netlify.com//gallery/stylized-portrait-tribute-to-razan-al-najjar/</link><guid isPermaLink="false">https://griddy.netlify.com//gallery/stylized-portrait-tribute-to-razan-al-najjar/</guid><pubDate>Sat, 27 Oct 2018 00:26:47 GMT</pubDate><content:encoded>&lt;p&gt;This is my tribute to Razan al-Najjar, a Palestinian nurse volunteering in the Gaza health ministry that died by gunshot on 1 June 2018 (aged 21)&lt;/p&gt;</content:encoded></item><item><title><![CDATA[6.828-2017 Lab]]></title><description><![CDATA[Operating Systems Engineering: 6.828 teaches the fundamentals of engineering operating systems.  https://pdos.csail.mit.edu/6.828/201…]]></description><link>https://griddy.netlify.com//blog/jos-lab/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/jos-lab/</guid><pubDate>Fri, 20 Apr 2018 08:44:36 GMT</pubDate><content:encoded>&lt;p&gt;&lt;strong&gt;Operating Systems Engineering: 6.828 teaches the fundamentals of engineering operating systems.&lt;/strong&gt; &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://pdos.csail.mit.edu/6.828/2017/overview.html&quot;&gt;https://pdos.csail.mit.edu/6.828/2017/overview.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The major parts of the JOS operating system are:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Booting&lt;/li&gt;
+&lt;li&gt;Memory management&lt;/li&gt;
+&lt;li&gt;User environments&lt;/li&gt;
+&lt;li&gt;Preemptive multitasking&lt;/li&gt;
+&lt;li&gt;File system, spawn, and shell&lt;/li&gt;
+&lt;li&gt;Network driver&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h4&gt;Part1: PC Bootstrap&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 1.&lt;/strong&gt; Familiarize yourself with the assembly language materials available on &lt;a href=&quot;https://pdos.csail.mit.edu/6.828/2017/reference.html&quot;&gt;the 6.828 reference page&lt;/a&gt;. You don&apos;t have to read them now, but you&apos;ll almost certainly want to refer to some of this material when reading and writing x86 assembly. &lt;/p&gt;
+&lt;p&gt;We do recommend reading the section &quot;The Syntax&quot; in &lt;a href=&quot;http://www.delorie.com/djgpp/doc/brennan/brennan_att_inline_djgpp.html&quot;&gt;Brennan&apos;s Guide to Inline Assembly&lt;/a&gt;. It gives a good (and quite brief) description of the AT&amp;#x26;T assembly syntax we&apos;ll be using with the GNU assembler in JOS.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;关于Inline Assembly，参考这个链接：&lt;a href=&quot;http://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html&quot;&gt;http://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 2.&lt;/strong&gt; Use GDB&apos;s &lt;code class=&quot;language-text&quot;&gt;si&lt;/code&gt; (Step Instruction) command to trace into the ROM BIOS for a few more instructions, and try to guess what it might be doing. You might want to look at &lt;a href=&quot;http://web.archive.org/web/20040404164813/members.iweb.net.au/~pstorr/pcbook/book2/book2.htm&quot;&gt;Phil Storrs I/O Ports Description&lt;/a&gt;, as well as other materials on the &lt;a href=&quot;https://pdos.csail.mit.edu/6.828/2017/reference.html&quot;&gt;6.828 reference materials page&lt;/a&gt;. No need to figure out all the details - just the general idea of what the BIOS is doing first.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When the BIOS runs, it sets up an interrupt descriptor table and initializes various devices such as the VGA display.&lt;/p&gt;
+&lt;p&gt;After initializing the PCI bus and all the important devices the BIOS knows about, it searches for a bootable device such as a floppy, hard drive, or CD-ROM. Eventually, when it finds a bootable disk, the BIOS reads the &lt;em&gt;boot loader&lt;/em&gt; from the disk and transfers control to it.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h4&gt;Part 2: The Boot Loader&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 3.&lt;/strong&gt; Take a look at the &lt;a href=&quot;https://pdos.csail.mit.edu/6.828/2017/labguide.html&quot;&gt;lab tools guide&lt;/a&gt;, especially the section on GDB commands. Even if you&apos;re familiar with GDB, this includes some esoteric GDB commands that are useful for OS work. &lt;/p&gt;
+&lt;p&gt;Set a breakpoint at address 0x7c00, which is where the boot sector will be loaded. Continue execution until that breakpoint. Trace through the code in &lt;code class=&quot;language-text&quot;&gt;boot/boot.S&lt;/code&gt;, using the source code and the disassembly file &lt;code class=&quot;language-text&quot;&gt;obj/boot/boot.asm&lt;/code&gt; to keep track of where you are. Also use the &lt;code class=&quot;language-text&quot;&gt;x/i&lt;/code&gt; command in GDB to disassemble sequences of instructions in the boot loader, and compare the original boot loader source code with both the disassembly in &lt;code class=&quot;language-text&quot;&gt;obj/boot/boot.asm&lt;/code&gt; and GDB. &lt;/p&gt;
+&lt;p&gt;Trace into &lt;code class=&quot;language-text&quot;&gt;bootmain()&lt;/code&gt; in &lt;code class=&quot;language-text&quot;&gt;boot/main.c&lt;/code&gt;, and then into &lt;code class=&quot;language-text&quot;&gt;readsect()&lt;/code&gt;. Identify the exact assembly instructions that correspond to each of the statements in &lt;code class=&quot;language-text&quot;&gt;readsect()&lt;/code&gt;. Trace through the rest of &lt;code class=&quot;language-text&quot;&gt;readsect()&lt;/code&gt; and back out into &lt;code class=&quot;language-text&quot;&gt;bootmain()&lt;/code&gt;, and identify the begin and end of the &lt;code class=&quot;language-text&quot;&gt;for&lt;/code&gt; loop that reads the remaining sectors of the kernel from the disk. Find out what code will run when the loop is finished, set a breakpoint there, and continue to that breakpoint. Then step through the remainder of the boot loader. Be able to answer the following questions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;At what point does the processor start executing 32-bit code? What exactly causes the switch from 16- to 32-bit mode?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;boot.S中的ljmp之后，开始执行第一条32-bit指令，也就是说ljmp是最后一条16-bit指令。&lt;strong&gt;这个长跳转导致了处理器模式的切换&lt;/strong&gt;：在修改了PE位之后，程序必须立即使用一条跳转指令，以刷新处理器流水线中已经获取的不同模式下的任何指令。ljmp之前的指令，包括ljmp都是在16-bit模式下被处理器执行的。当执行ljmp跳转指令时，&lt;strong&gt;处理器流水线被清空，CS段寄存器被设置为0x8&lt;/strong&gt;（段选择子0x8）。之前已经初始化好GDTR，PE的使能进入了保护模式并开启段级保护，下一条指令的取指会使用段地址转换机制。&lt;/li&gt;
+&lt;li&gt;先前设置的代码段和数据段的基址、限长均为[0x00000000,0xFFFFFFFF)，所以经过段地址转换后得到的&lt;strong&gt;线性地址和虚拟地址（逻辑地址）一致&lt;/strong&gt;，由于还没有开启分页机制，此线性地址即为处理器地址总线产生的物理地址。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;What is the &lt;em&gt;last&lt;/em&gt; instruction of the boot loader executed, and what is the &lt;em&gt;first&lt;/em&gt; instruction of the kernel it just loaded?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;bootloader执行的最后一条指令是&lt;code class=&quot;language-text&quot;&gt;call *0x10018&lt;/code&gt;，也就是&lt;code class=&quot;language-text&quot;&gt;(void (*)(void))(ELFHDR-&amp;gt;e_entry())&lt;/code&gt;，内存地址&lt;code class=&quot;language-text&quot;&gt;0x10018&lt;/code&gt;的内容是&lt;code class=&quot;language-text&quot;&gt;0x10000C&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;内核的第一条指令是：&lt;code class=&quot;language-text&quot;&gt;movw $0x1234, 0x472&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;code class=&quot;language-text&quot;&gt;Where&lt;/code&gt;&lt;/em&gt; is the first instruction of the kernel?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;内核执行的第一条指令位于&lt;code class=&quot;language-text&quot;&gt;0x10000C&lt;/code&gt;处（物理地址）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;How does the boot loader decide how many sectors it must read in order to fetch the entire kernel from disk? Where does it find this information?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;bootloader先读了包含ELF header的一页（4K，足够大包含完整的ELF header）到内存，根据ELF header得到program headers的偏移和个数，进而得到每个program segment在文件中的偏移、Memsize、需要加载到的物理地址（由链接脚本控制），一个接一个的加载到指定的内存地址中。&lt;/li&gt;
+&lt;li&gt;内核的链接由&lt;code class=&quot;language-text&quot;&gt;kernel.ld&lt;/code&gt;脚本控制，生成的ELF中包含的segment个数为3，其中GUN_STACK其MemSize为0，没有东西需要加载到内存：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 720px;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 52.827380952380956%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAAsSAAALEgHS3X78AAAB0ElEQVQoz3VS13LcMAzUL8QSOyWdWNTudJbtNKf8/0dphsiS9mXiJH7YAQgSiwXAyi+XY9q2IyznI0zLEeb1xV/Ww+cz7nPs5vtxOlwIQHyDk/PHp89fjoq1A2nnSA8D8dZS0zuSpwB44p0jMQTEe2JKw56o5pLuGkZ3jL9YoIb/oW5o8IEqu+7Jztc0LzHdR5e2ZUs2zEn7KZmwJOViMgDXJnFlkpQqMSHfArGGi+TjmCrlJ0IS6d5T52dqoVANkWR3Iq5tUSq6gQTUKai1UhGDouYGLgBONZT6EKlScSXtR1KAyK1laFNalCBnIOWmJZF9hXj2QV4KwZY7FGemI5cJzboXwrquiaP6GSoeoHgG8RXq98HTGWRP40r7ydGM5PzmgpwNpF2Yyed38OdxokpPF7LzVqo1GOwDFP1oO9qNpWeQfgPBR5x/dj09w3+0HX1F/An2u23JLVeaUOAKMTGOVMmwkAFpbtmAWDtYVNR4JIQs82KYE4efwf62IMqd5a2Xlgckd3EhBent5bGQyryUMqO+fCFh+9fh/x+ZPH+dshSPg2KsDDZvNyvMg8Y3KVsWaA3f5Xfie6hvCgUeCki+Jfyj4PVr/Hn3HmHAUn4BHuMngY9tEpMAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;kernel&quot;
+        title=&quot;kernel&quot;
+        src=&quot;/static/58f5a442199285a7c72676d5e56cbaf0/6da3e/kernel.png&quot;
+        srcset=&quot;/static/58f5a442199285a7c72676d5e56cbaf0/b059c/kernel.png 180w,
+/static/58f5a442199285a7c72676d5e56cbaf0/8f8c6/kernel.png 360w,
+/static/58f5a442199285a7c72676d5e56cbaf0/6da3e/kernel.png 720w,
+/static/58f5a442199285a7c72676d5e56cbaf0/e9c61/kernel.png 1080w,
+/static/58f5a442199285a7c72676d5e56cbaf0/1ad92/kernel.png 1344w&quot;
+        sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 6.&lt;/strong&gt; We can examine memory using GDB&apos;s x command. The &lt;a href=&quot;https://sourceware.org/gdb/current/onlinedocs/gdb/Memory.html&quot;&gt;GDB manual&lt;/a&gt; has full details, but for now, it is enough to know that the command x/&lt;em&gt;N&lt;/em&gt;x &lt;em&gt;ADDR&lt;/em&gt; prints &lt;em&gt;N&lt;/em&gt; words of memory at &lt;em&gt;ADDR&lt;/em&gt;. (Note that both &apos;&lt;code class=&quot;language-text&quot;&gt;x&lt;/code&gt;&apos;s in the command are lowercase.) &lt;em&gt;Warning&lt;/em&gt;: The size of a word is not a universal standard. In GNU assembly, a word is two bytes (the &apos;w&apos; in xorw, which stands for word, means 2 bytes).&lt;/p&gt;
+&lt;p&gt;Reset the machine (exit QEMU/GDB and start them again). Examine the 8 words of memory at 0x00100000 at the point the BIOS enters the boot loader, and then again at the point the boot loader enters the kernel. Why are they different? What is there at the second breakpoint? (You do not really need to use QEMU to answer this question. Just think.)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;bootloader开始执行时，0x100000地址处全为0，没有任何数据；之后bootloader将内核加载到这个地址，所以在第二个断点处通过gdb的反汇编可以看到内核的指令：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/file/assembly-88e689fa1aad8b42566e97cc536b95ab.svg&quot; alt=&quot;assembly&quot;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h4&gt;Part 3: The Kernel&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 7.&lt;/strong&gt; Use QEMU and GDB to trace into the JOS kernel and stop at the &lt;code class=&quot;language-text&quot;&gt;movl %eax, %cr0&lt;/code&gt;. Examine memory at 0x00100000 and at 0xf0100000. Now, single step over that instruction using the stepi GDB command. Again, examine memory at 0x00100000 and at 0xf0100000. Make sure you understand what just happened.&lt;/p&gt;
+&lt;p&gt;What is the first instruction &lt;em&gt;after&lt;/em&gt; the new mapping is established that would fail to work properly if the mapping weren&apos;t in place? Comment out the &lt;code class=&quot;language-text&quot;&gt;movl %eax, %cr0&lt;/code&gt; in &lt;code class=&quot;language-text&quot;&gt;kern/entry.S&lt;/code&gt;, trace into it, and see if you were right.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;第一条失败的指令是&lt;code class=&quot;language-text&quot;&gt;jmp *%eax&lt;/code&gt;：跳转指令引起处理器从新的地址取指令（访问存储器），由于注释掉了开启分页的代码，指令地址无法正确转换到物理地址，引起qemu崩溃. &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Any virtual address that is not in one of these two ranges will cause a hardware exception which, since we haven&apos;t set up interrupt handling yet, will cause QEMU to dump the machine state and exit.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;/file/crash-fec9941215e484223971a0c841571ca6.svg&quot; alt=&quot;crash&quot;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 8.&lt;/strong&gt; We have omitted a small fragment of code - the code necessary to print octal numbers using patterns of the form &quot;%o&quot;. Find and fill in this code fragment. &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Explain the interface between &lt;code class=&quot;language-text&quot;&gt;printf.c&lt;/code&gt; and &lt;code class=&quot;language-text&quot;&gt;console.c&lt;/code&gt;. Specifically, what function does &lt;code class=&quot;language-text&quot;&gt;console.c&lt;/code&gt; export? How is this function used by &lt;code class=&quot;language-text&quot;&gt;printf.c&lt;/code&gt;?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;int cputch(int c)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;printf.c&lt;/code&gt;使用这个函数将字符输出到串口。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Explain the following from &lt;code class=&quot;language-text&quot;&gt;console.c&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c&quot;&gt;&lt;pre class=&quot;language-c&quot;&gt;&lt;code class=&quot;language-c&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;crt_pos &lt;span class=&quot;token operator&quot;&gt;&gt;=&lt;/span&gt; CRT_SIZE&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; i&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;token function&quot;&gt;memmove&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;crt_buf&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; crt_buf &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; CRT_COLS&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;CRT_SIZE &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; CRT_COLS&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;sizeof&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;uint16_t&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;i &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; CRT_SIZE &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; CRT_COLS&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; CRT_SIZE&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; i&lt;span class=&quot;token operator&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+   	crt_buf&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0x0700&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos; &apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+   crt_pos &lt;span class=&quot;token operator&quot;&gt;-=&lt;/span&gt; CRT_COLS&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;// 是scroll功能的实现，将当前屏幕除第一行的内容上移一行，最后一行清空，更新当前显式位置&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;For the following questions you might wish to consult the notes for Lecture 2. These notes cover GCC&apos;s calling convention on the x86. Trace the execution of the following code step-by-step:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c&quot;&gt;&lt;pre class=&quot;language-c&quot;&gt;&lt;code class=&quot;language-c&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; x &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; y &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; z &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;cprintf&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;x %d, y %x, z %d\n&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; x&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; z&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;In the call to &lt;code class=&quot;language-text&quot;&gt;cprintf()&lt;/code&gt;, to what does &lt;code class=&quot;language-text&quot;&gt;fmt&lt;/code&gt; point? To what does &lt;code class=&quot;language-text&quot;&gt;ap&lt;/code&gt; point?&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;fmt&lt;/code&gt;指向格式化字符串，&lt;code class=&quot;language-text&quot;&gt;ap&lt;/code&gt;指向第一个参数（也就是&lt;code class=&quot;language-text&quot;&gt;x&lt;/code&gt;）（&lt;code class=&quot;language-text&quot;&gt;ap&lt;/code&gt;实际上是一个&lt;code class=&quot;language-text&quot;&gt;char *&lt;/code&gt;，&lt;a href=&quot;https://stackoverflow.com/questions/12371450/how-are-variable-arguments-implemented-in-gcc&quot;&gt;参考这里&lt;/a&gt;和&lt;a href=&quot;http://blog.aaronballman.com/2012/06/how-variable-argument-lists-work-in-c/&quot;&gt;这里&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;List (in order of execution) each call to &lt;code class=&quot;language-text&quot;&gt;cons_putc&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;va_arg&lt;/code&gt;, and &lt;code class=&quot;language-text&quot;&gt;vcprintf&lt;/code&gt;. For &lt;code class=&quot;language-text&quot;&gt;cons_putc&lt;/code&gt;, list its argument as well. For &lt;code class=&quot;language-text&quot;&gt;va_arg&lt;/code&gt;, list what &lt;code class=&quot;language-text&quot;&gt;ap&lt;/code&gt; points to before and after the call. For &lt;code class=&quot;language-text&quot;&gt;vcprintf&lt;/code&gt; list the values of its two arguments.&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;vcprintf&lt;/code&gt;参数&lt;code class=&quot;language-text&quot;&gt;&amp;quot;x %d, y %x, z %d\n&amp;quot;&lt;/code&gt;和&lt;code class=&quot;language-text&quot;&gt;va_list&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;cons_putc(&amp;#39;x&amp;#39;); cons_putc(&amp;#39; &amp;#39;)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;ap-&amp;gt;x; va_arg(); ap-&amp;gt;y;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;cons_puts(1); cons_puts(,); cons_puts(&amp;#39; &amp;#39;); cons_puts(&amp;#39;y&amp;#39;); cons_puts(&amp;#39; &amp;#39;)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;ap-&amp;gt;y; va_arg(); ap-&amp;gt;z;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;cons_puts(3); cons_puts(,); cons_puts(&amp;#39; &amp;#39;); cons_puts(&amp;#39;z&amp;#39;); cons_puts(&amp;#39; &amp;#39;)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;ap-&amp;gt;z; va_arg(); ap-&amp;gt;null(after va_end();&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;cons_puts(4); cons_puts(&amp;#39;\n&amp;#39;)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Run the following code.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c&quot;&gt;&lt;pre class=&quot;language-c&quot;&gt;&lt;code class=&quot;language-c&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0x00646c72&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;cprintf&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;H%x Wo%s&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;57616&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What is the output? Explain how this output is arrived at in the step-by-step manner of the previous exercise. &lt;a href=&quot;http://web.cs.mun.ca/~michael/c/ascii-table.html&quot;&gt;Here&apos;s an ASCII table&lt;/a&gt; that maps bytes to characters.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;He110 World&lt;/code&gt;
+57616 的16进制表示是&lt;code class=&quot;language-text&quot;&gt;0xe110&lt;/code&gt;。 &lt;code class=&quot;language-text&quot;&gt;%s&lt;/code&gt;打印&lt;code class=&quot;language-text&quot;&gt;i&lt;/code&gt;的内容，在little-endian机器上依次打印0x72、 0x6c、 0x64、 0x00，其ASCII表示分别为&lt;code class=&quot;language-text&quot;&gt;&amp;#39;r&amp;#39;,&amp;#39;l&amp;#39;,&amp;#39;d&amp;#39;,&amp;#39;\0&amp;#39;&lt;/code&gt;。	&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The output depends on that fact that the x86 is little-endian. If the x86 were instead big-endian what would you set &lt;code class=&quot;language-text&quot;&gt;i&lt;/code&gt; to in order to yield the same output? Would you need to change&lt;code class=&quot;language-text&quot;&gt;57616&lt;/code&gt; to a different value? &lt;a href=&quot;http://www.webopedia.com/TERM/b/big_endian.html&quot;&gt;Here&apos;s a description of little- and big-endian&lt;/a&gt; and &lt;a href=&quot;http://www.networksorcery.com/enp/ien/ien137.txt&quot;&gt;a more whimsical description&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果x86是big-endian，57616不需要修改；&lt;code class=&quot;language-text&quot;&gt;i&lt;/code&gt;的值则需要修改为&lt;code class=&quot;language-text&quot;&gt;0x726c6400&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In the following code, what is going to be printed after &lt;code class=&quot;language-text&quot;&gt;&amp;#39;y=&amp;#39;&lt;/code&gt;? (note: the answer is not a specific value.) Why does this happen?&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c&quot;&gt;&lt;pre class=&quot;language-c&quot;&gt;&lt;code class=&quot;language-c&quot;&gt;&lt;span class=&quot;token function&quot;&gt;cprintf&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;x=%d y=%d&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;首先假设函数的参数以及可变参数的实现是通过栈实现的，并且函数实参按相反的顺序入栈。由于实际参数的个数偏少，&lt;code class=&quot;language-text&quot;&gt;va_arg&lt;/code&gt;会取栈上&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;后面4字节（假设int为4字节大小）为实参，按照十进制输出。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Let&apos;s say that GCC changed its calling convention so that it pushed arguments on the stack in declaration order, so that the last argument is pushed last. How would you have to change &lt;code class=&quot;language-text&quot;&gt;cprintf&lt;/code&gt; or its interface so that it would still be possible to pass it a variable number of arguments?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;接口改为&lt;code class=&quot;language-text&quot;&gt;cprintf(..., const char* fmt)&lt;/code&gt;，总之保证&lt;code class=&quot;language-text&quot;&gt;fmt&lt;/code&gt;是最后一个入栈的参数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 9.&lt;/strong&gt; Determine where the kernel initializes its stack, and exactly where in memory its stack is located. How does the kernel reserve space for its stack? And at which &quot;end&quot; of this reserved area is the stack pointer initialized to point to?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;内核栈的初始化在&lt;code class=&quot;language-text&quot;&gt;entry.S&lt;/code&gt;文件中：&lt;code class=&quot;language-text&quot;&gt;movl $(bootstacktop) %esp&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;bootstacktop&lt;/code&gt;位于地址&lt;code class=&quot;language-text&quot;&gt;0xf0110000&lt;/code&gt;，&lt;code class=&quot;language-text&quot;&gt;[0xf0108000, 0xf0110000)&lt;/code&gt;是boot进入内核后的初始栈空间&lt;/li&gt;
+&lt;li&gt;栈指针初始化为栈顶，也就是&lt;code class=&quot;language-text&quot;&gt;0xf0110000&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 10.&lt;/strong&gt; To become familiar with the C calling conventions on the x86, find the address of the &lt;code class=&quot;language-text&quot;&gt;test_backtrace&lt;/code&gt; function in &lt;code class=&quot;language-text&quot;&gt;obj/kern/kernel.asm&lt;/code&gt;, set a breakpoint there, and examine what happens each time it gets called after the kernel starts. How many 32-bit words does each recursive nesting level of &lt;code class=&quot;language-text&quot;&gt;test_backtrace&lt;/code&gt; push on the stack, and what are those words?&lt;/p&gt;
+&lt;p&gt;Note that, for this exercise to work properly, you should be using the patched version of QEMU available on the &lt;a href=&quot;https://pdos.csail.mit.edu/6.828/2017/tools.html&quot;&gt;tools&lt;/a&gt; page or on Athena. Otherwise, you&apos;ll have to manually translate all breakpoint and memory addresses to linear addresses.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每次递归调用，会占用8个 32-bit words；栈帧的大小为32 bytes&lt;img src=&quot;/file/stack-310d1320399c88a98678e9ec8f78d9bf.svg&quot; alt=&quot;stack&quot;&gt;&lt;/li&gt;
+&lt;li&gt;栈帧中主要包含传递给被调用函数的参数，返回地址以及帧指针的值&lt;img src=&quot;/file/stack2-96b22d02435711ab0e47f35169bc2649.svg&quot; alt=&quot;stack2&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 11.&lt;/strong&gt; Implement the backtrace function as specified above. Use the same format as in the example, since otherwise the grading script will be confused. When you think you have it working right, run make grade to see if its output conforms to what our grading script expects, and fix it if it doesn&apos;t. &lt;em&gt;After&lt;/em&gt; you have handed in your Lab 1 code, you are welcome to change the output format of the backtrace function any way you like.&lt;/p&gt;
+&lt;p&gt;If you use &lt;code class=&quot;language-text&quot;&gt;read_ebp()&lt;/code&gt;, note that GCC may generate &quot;optimized&quot; code that calls &lt;code class=&quot;language-text&quot;&gt;read_ebp()&lt;/code&gt; &lt;em&gt;before&lt;/em&gt; &lt;code class=&quot;language-text&quot;&gt;mon_backtrace()&lt;/code&gt;&apos;s function prologue, which results in an incomplete stack trace (the stack frame of the most recent function call is missing). While we have tried to disable optimizations that cause this reordering, you may want to examine the assembly of &lt;code class=&quot;language-text&quot;&gt;mon_backtrace()&lt;/code&gt; and make sure the call to &lt;code class=&quot;language-text&quot;&gt;read_ebp()&lt;/code&gt; is happening after the function prologue.&lt;/p&gt;
+&lt;p&gt;Why can&apos;t the backtrace code detect how many arguments there actually are? How could this limitation be fixed?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;因为没有参数个数的信息；如果约定函数调用时，同时将参数的个数入栈，backtrace就可以利用获取正确个数的参数了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Part 2: Virtual Memory&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Question 1:&lt;/strong&gt; Assuming that the following JOS kernel code is correct, what type should variable &lt;code class=&quot;language-text&quot;&gt;x&lt;/code&gt; have, &lt;code class=&quot;language-text&quot;&gt;uintptr_t&lt;/code&gt; or &lt;code class=&quot;language-text&quot;&gt;physaddr_t&lt;/code&gt; ?&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c&quot;&gt;&lt;pre class=&quot;language-c&quot;&gt;&lt;code class=&quot;language-c&quot;&gt;mystery_t x&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; value &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;return_a_pointer&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;value &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+x &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;mystery_t&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; value&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;uintptr_t&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Question 2:&lt;/strong&gt; What entries (rows) in the page directory have been filled in at this point? What addresses do they map and where do they point? In other words, fill out this table as much as possible:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&quot;center&quot;&gt;Entry&lt;/th&gt;
+&lt;th align=&quot;center&quot;&gt;Base Virtual Address&lt;/th&gt;
+&lt;th align=&quot;center&quot;&gt;Points to (logically):&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;1023&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0xffc00000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;phys memory: [252MB, 256MB)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;1022&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0xff800000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;phys memory: [248MB, 252MB)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;.&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;.&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;961(0x3c1)&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0xf0400000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;phys memory: [4MB, 8MB)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;960(0x3c0)&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0xf0000000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;phys memory: [0, 4MB)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;959(0x3bf)&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0xefc00000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;kernel stack&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;958(0x3be)&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0xef800000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;NA&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;957(0x3bd)&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0xef400000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;page pirectory page itself&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;956(0x3bc)&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0xef000000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;UPAGES&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;955(0x3bb)&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0xeec00000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;NA&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;.&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;.&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;2&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0x00800000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;NA&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0x00400000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;NA&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;0&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;0x00000000&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;NA&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Question 3:&lt;/strong&gt; We have placed the kernel and user environment in the same address space. Why will user programs not be able to read or write the kernel&apos;s memory? What specific mechanisms protect the kernel memory?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;[UTOP, ULIM)&lt;/code&gt;地址段，user是可以读，但不可以写的（内核也不可写）&lt;/li&gt;
+&lt;li&gt;user程序不能读写属于内核的地址空间；这是通过page table entry中的&lt;code class=&quot;language-text&quot;&gt;PTE_U&lt;/code&gt;标志，来控制该段地址是否允许user读或写的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Question 4:&lt;/strong&gt; What is the maximum amount of physical memory that this operating system can support? Why?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;256M&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;因为内核将所有物理内存都映射到了KERNBASE地址处，因此KERNBASE的值将限制&lt;code class=&quot;language-text&quot;&gt;JOS&lt;/code&gt;可以使用的物理内存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Question 5:&lt;/strong&gt; How much space overhead is there for managing memory, if we actually had the maximum amount of physical memory? How is this overhead broken down?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;管理内存的开销主要有两部分：物理内存管理 + 页表&lt;/li&gt;
+&lt;li&gt;物理内存通过链表管理，链表的开销是固定的，大小为&lt;code class=&quot;language-text&quot;&gt;sizeof（struct PageInfo）* npages&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;页表开销包括：映射所有的物理内存、映射页表到UVPT（通过页目录实现，不消耗额外页表）、映射pages到UPAGES、kernel stack映射的开销&lt;/li&gt;
+&lt;li&gt;假设有256M内存，物理页链表开销为&lt;code class=&quot;language-text&quot;&gt;128个&lt;/code&gt;页（npages = 265M/4K = 64K， sizeof(struct PageInfo)为8）；256M物理内存，一个页表可以映射4M，则需要&lt;code class=&quot;language-text&quot;&gt;64个&lt;/code&gt;页表；映射页表自身到UVPT，不消耗额外页表；映射npages到UPAGES需要&lt;code class=&quot;language-text&quot;&gt;1个&lt;/code&gt;页表；kernel stack映射需要&lt;code class=&quot;language-text&quot;&gt;1个&lt;/code&gt;页表；Page Directory自身需要&lt;code class=&quot;language-text&quot;&gt;1个&lt;/code&gt;页；所以加起来总共需要&lt;code class=&quot;language-text&quot;&gt;195&lt;/code&gt;个页。（页大小为4K）&lt;/li&gt;
+&lt;li&gt;195个页的开销(&lt;strong&gt;195 / 64K = 0.3%&lt;/strong&gt;)只是这个时间点的，即还没有运行任何程序。如果运行应用程序，还需要为应用程序分配页目录和页表，用于管理应用程序对内存的访问。&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;lab中的机器内存虽然是128M，但还是按照256M来进行页表的分配的，页表映射是下图这个样子的。下面来简单分析下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;256M物理内存，对应64个PDE从3c0到3ff&lt;/li&gt;
+&lt;li&gt;PDE 0x3bc映射的是&lt;code class=&quot;language-text&quot;&gt;UPAGES&lt;/code&gt;，因为是128M的物理内存，需要的页为64个而不是256M时的128个，对应64个PTE&lt;/li&gt;
+&lt;li&gt;PDE 0x3bd映射的是页表本身，&lt;code class=&quot;language-text&quot;&gt;neat trick&lt;/code&gt;，实现仅需一行代码，非常有意思。3bd对应的地址是&lt;code class=&quot;language-text&quot;&gt;UVPT&lt;/code&gt;开始的4M空间，PTE就是Page Directory页中的内容。后面Pysical Page就是PDE指向的Page Table Page了，是物理页。从中可以得到的信息有：Page Directory Page是物理页的第0x118个。&lt;strong&gt;Page Table Page的分配却从0x3ff开始，为什么不是从物理内存的最后一个页开始呢？&lt;/strong&gt;这是因为bootstrap时，内核仅映射了KERNBASE开始的4M虚拟地址空间，更高的地址空间还没有映射。不过这个行为不是在正常代码中设置的，而是在&lt;code class=&quot;language-text&quot;&gt;check_page_free_list()&lt;/code&gt;中设置的&lt;/li&gt;
+&lt;li&gt;PDE 0x3bf 映射的是32K&lt;code class=&quot;language-text&quot;&gt;内核栈&lt;/code&gt;，8个PTE对应连续的8个物理页，从0x10d到0x114&lt;/li&gt;
+&lt;li&gt;128M物理内存的情况下，内核进行内存管理的overhead为：&lt;code class=&quot;language-text&quot;&gt;3 + 64 + 64 = 131 个页&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/file/memmap-a542c1b1b967a67e40a22960d9f4a4cb.svg&quot; alt=&quot;memmap&quot;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Question 6:&lt;/strong&gt; Revisit the page table setup in &lt;code class=&quot;language-text&quot;&gt;kern/entry.S&lt;/code&gt; and &lt;code class=&quot;language-text&quot;&gt;kern/entrypgdir.c&lt;/code&gt;. Immediately after we turn on paging, EIP is still a low number (a little over 1MB). At what point do we transition to running at an EIP above KERNBASE? What makes it possible for us to continue executing at a low EIP between when we enable paging and when we begin running at an EIP above KERNBASE? Why is this transition necessary?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;jmp *eax&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;因为地址空间的[0, 4MB)和[KERNBASE, KERNBASE+4MB)都映射到了物理地址[0, 4MB)处，内核加载在这个地方&lt;/li&gt;
+&lt;li&gt;转换是必要的，内核的link地址是KERNBASE，即内核中符号的地址都是在高位的，也就是说内核预期自己会在高位的地址空间执行，从而将KERNBASE一下的地址空间留给应用程序使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Part 3: User environments&lt;/h4&gt;
+&lt;h4&gt;Part A : User Environments and Exception Handling&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Question 1:&lt;/strong&gt; What is the purpose of having an individual handler function for each exception/interrupt? (i.e., if all exceptions/interrupts were delivered to the same handler, what feature that exists in the current implementation could not be provided?)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为了区分不同的异常/中断&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;**Question 2: *&lt;em&gt;Did you have to do anything to make the &lt;code class=&quot;language-text&quot;&gt;user/softint&lt;/code&gt; program behave correctly? The grade script expects it to produce a general protection fault (trap 13), but &lt;code class=&quot;language-text&quot;&gt;softint&lt;/code&gt;&apos;s code says &lt;code class=&quot;language-text&quot;&gt;int $14&lt;/code&gt;. *Why&lt;/em&gt; should this produce interrupt vector 13? What happens if the kernel actually allows &lt;code class=&quot;language-text&quot;&gt;softint&lt;/code&gt;&apos;s&lt;code class=&quot;language-text&quot;&gt;int $14&lt;/code&gt; instruction to invoke the kernel&apos;s page fault handler (which is interrupt vector 14)?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vector 13表示General Protection异常，说明应用代码违反了保护机制&lt;/li&gt;
+&lt;li&gt;IDT表中，vector 14的DPL被设置为0，只有特权代码才可以使用int指令生成page fault的异常，应用代码会触发保护异常，也就是vector 13&lt;/li&gt;
+&lt;li&gt;需要将vector 14的DPL设置为&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h4&gt;Patt B: Page Faults, Breakpoints Exceptions, and System Calls&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Question 3:&lt;/strong&gt; The break point test case will either generate a break point exception or a general protection fault depending on how you initialized the break point entry in the IDT (i.e., your call to &lt;code class=&quot;language-text&quot;&gt;SETGATE&lt;/code&gt; from &lt;code class=&quot;language-text&quot;&gt;trap_init&lt;/code&gt;). Why? How do you need to set it up in order to get the breakpoint exception to work as specified above and what incorrect setup would cause it to trigger a general protection fault?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;SETGATE(idt[T_BRKPT], 0, GD_KT, v_breakpoint, 3);&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;如果DPL是&lt;code class=&quot;language-text&quot;&gt;0&lt;/code&gt;，产生&lt;code class=&quot;language-text&quot;&gt;general protection fault&lt;/code&gt;；如果是&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;，产生预期的&lt;code class=&quot;language-text&quot;&gt;breakpoint exception&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;**Question 4: ** What do you think is the point of these mechanisms, particularly in light of what the &lt;code class=&quot;language-text&quot;&gt;user/softint&lt;/code&gt; test program does?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;强隔离，限制应用程序权限，预防可能的破坏OS的行为发生&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Exercise 9:&lt;/strong&gt; Finally, change &lt;code class=&quot;language-text&quot;&gt;debuginfo_eip&lt;/code&gt; in &lt;code class=&quot;language-text&quot;&gt;kern/kdebug.c&lt;/code&gt; to call &lt;code class=&quot;language-text&quot;&gt;user_mem_check&lt;/code&gt; on &lt;code class=&quot;language-text&quot;&gt;usd&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;stabs&lt;/code&gt;, and &lt;code class=&quot;language-text&quot;&gt;stabstr&lt;/code&gt;. If you now run &lt;code class=&quot;language-text&quot;&gt;user/breakpoint&lt;/code&gt;, you should be able to run backtrace from the kernel monitor and see the backtrace traverse into &lt;code class=&quot;language-text&quot;&gt;lib/libmain.c&lt;/code&gt; before the kernel panics with a page fault. What causes this page fault? You don&apos;t need to fix it, but you should understand why it happens.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从&lt;code class=&quot;language-text&quot;&gt;page_fault_handler&lt;/code&gt;中可以观察到，&lt;code class=&quot;language-text&quot;&gt;cr2&lt;/code&gt;的值为&lt;code class=&quot;language-text&quot;&gt;0xeebfe004&lt;/code&gt;，超过了&lt;code class=&quot;language-text&quot;&gt;USTACKTOP（0xeebfe000）&lt;/code&gt;，导致缺页异常&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Part 4: multitasking&lt;/h3&gt;
+&lt;h4&gt;Part A: Multiprocessor Support and Cooperative Multitasking&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Question 1:&lt;/strong&gt; Compare &lt;code class=&quot;language-text&quot;&gt;kern/mpentry.S&lt;/code&gt; side by side with &lt;code class=&quot;language-text&quot;&gt;boot/boot.S&lt;/code&gt;. Bearing in mind that &lt;code class=&quot;language-text&quot;&gt;kern/mpentry.S&lt;/code&gt; is compiled and linked to run above &lt;code class=&quot;language-text&quot;&gt;KERNBASE&lt;/code&gt; just like everything else in the kernel, what is the purpose of macro &lt;code class=&quot;language-text&quot;&gt;MPBOOTPHYS&lt;/code&gt;? Why is it necessary in &lt;code class=&quot;language-text&quot;&gt;kern/mpentry.S&lt;/code&gt; but not in &lt;code class=&quot;language-text&quot;&gt;boot/boot.S&lt;/code&gt;? In other words, what could go wrong if it were omitted in &lt;code class=&quot;language-text&quot;&gt;kern/mpentry.S&lt;/code&gt;? &lt;/p&gt;
+&lt;p&gt;Hint: recall the differences between the link address and the load address that we have discussed in Lab 1.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;MPBOOTPHYS&lt;/code&gt;的作用是给出一个符号的物理地址&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;boot/boot.S&lt;/code&gt;的链接地址和加载地址不同；&lt;code class=&quot;language-text&quot;&gt;kern/mpentry.S&lt;/code&gt;的链接地址和加载地址相同，都在高位；当这段代码被拷贝到&lt;code class=&quot;language-text&quot;&gt;MPENTRY_PADDR&lt;/code&gt;地址处执行时，需要给出正确的跳转地址，也就是&lt;code class=&quot;language-text&quot;&gt;MPBOOTPHYS&lt;/code&gt;宏的作用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Question 2:&lt;/strong&gt; It seems that using the big kernel lock guarantees that only one CPU can run the kernel code at a time. Why do we still need separate kernel stacks for each CPU? Describe a scenario in which using a shared kernel stack will go wrong, even with the protection of the big kernel lock.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The big kernel lock is a single global lock that is held whenever an environment enters kernel mode, and is released when the environment returns to user mode. In this model, environments in user mode can run concurrently on any available CPUs, but no more than one environment can run in kernel mode; any other environments that try to enter kernel mode are forced to wait.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;这个锁的作用是限制user environment的，但是每个CPU是同时执行指令的，可能一个CPU上正在执行系统调用，因此陷入到了内核；另一个CPU发生了异常（外部中断、page fault等），也要陷入内核，如果让这两个CPU共享同一个内核栈将发生错乱&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Question 3:&lt;/strong&gt; In your implementation of &lt;code class=&quot;language-text&quot;&gt;env_run()&lt;/code&gt; you should have called &lt;code class=&quot;language-text&quot;&gt;lcr3()&lt;/code&gt;. Before and after the call to &lt;code class=&quot;language-text&quot;&gt;lcr3()&lt;/code&gt;, your code makes references (at least it should) to the variable &lt;code class=&quot;language-text&quot;&gt;e&lt;/code&gt;, the argument to &lt;code class=&quot;language-text&quot;&gt;env_run&lt;/code&gt;. Upon loading the &lt;code class=&quot;language-text&quot;&gt;%cr3&lt;/code&gt; register, the addressing context used by the MMU is instantly changed. But a virtual address (namely &lt;code class=&quot;language-text&quot;&gt;e&lt;/code&gt;) has meaning relative to a given address context--the address context specifies the physical address to which the virtual address maps. Why can the pointer &lt;code class=&quot;language-text&quot;&gt;e&lt;/code&gt; be dereferenced both before and after the addressing switch?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;e&lt;/code&gt;指向的是在只读&lt;code class=&quot;language-text&quot;&gt;ENVS (0xeec00000)&lt;/code&gt;地址空间映射好的&lt;code class=&quot;language-text&quot;&gt;Env&lt;/code&gt;数组&lt;/li&gt;
+&lt;li&gt;这部分地址空间有映射到用户环境中，因此再切换页表之后，仍然可以解引用&lt;code class=&quot;language-text&quot;&gt;e&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Question 4:&lt;/strong&gt; Whenever the kernel switches from one environment to another, it must ensure the old environment&apos;s registers are saved so they can be restored properly later. Why? Where does this happen?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;只有保存了old environment的寄存器，才能随后恢复&lt;/li&gt;
+&lt;li&gt;发生在系统调用，陷入内核时&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h4&gt;Part B: Copy-on-Write Fork&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The ordering here (i.e., marking a page as COW in the child before marking it in the parent) actually matters! Can you see why? Try to think of a specific case where reversing the order could cause trouble. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这个顺序主要影响的是可写的页，特别是&lt;strong&gt;栈&lt;/strong&gt;。如果栈中有数据的话（比如&lt;code class=&quot;language-text&quot;&gt;user/forktree&lt;/code&gt;中的数组&lt;code class=&quot;language-text&quot;&gt;nxt&lt;/code&gt;），那么顺序就很重要了，因为&lt;code class=&quot;language-text&quot;&gt;parent&lt;/code&gt;在&lt;code class=&quot;language-text&quot;&gt;fork&lt;/code&gt;之后是有可能继续修改这个数据的&lt;/li&gt;
+&lt;li&gt;简单分析下：对于栈来说，如果首先&lt;code class=&quot;language-text&quot;&gt;parent&lt;/code&gt;将其标记为&lt;code class=&quot;language-text&quot;&gt;COW&lt;/code&gt;，几乎立刻（发生函数调用）将触发&lt;code class=&quot;language-text&quot;&gt;page fault&lt;/code&gt;逻辑，拷贝一份新的页作为栈，并将其标记为&lt;code class=&quot;language-text&quot;&gt;PTE_W&lt;/code&gt;；然后恢复&lt;code class=&quot;language-text&quot;&gt;duppage&lt;/code&gt;逻辑，将此&lt;code class=&quot;language-text&quot;&gt;拷贝之后的栈页&lt;/code&gt;映射到child的地址空间；也就是说这个时候，parent/child的栈指向同一个页，但是parent是&lt;strong&gt;可写的&lt;/strong&gt;，这就要命了。&lt;code class=&quot;language-text&quot;&gt;parent&lt;/code&gt;可以继续修改栈中数据。因此当&lt;code class=&quot;language-text&quot;&gt;child&lt;/code&gt;开始运行的时候，此时的栈可能已经不是fork那个时候的栈了&lt;/li&gt;
+&lt;li&gt;可以调整一下这个顺序，然后运行&lt;code class=&quot;language-text&quot;&gt;user/forktree&lt;/code&gt;进行验证&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Exercise:&lt;/strong&gt; Why do we need to mark ours copy-on-write again if it was already copy-on-write at the beginning of this function (&lt;code class=&quot;language-text&quot;&gt;duppage&lt;/code&gt;)?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果是&lt;code class=&quot;language-text&quot;&gt;writable&lt;/code&gt;的，则必须修改为&lt;code class=&quot;language-text&quot;&gt;copy-on-write&lt;/code&gt;，这个容易理解&lt;/li&gt;
+&lt;li&gt;如果已经是&lt;code class=&quot;language-text&quot;&gt;copy-on-wirte&lt;/code&gt;的了，为什么还要重复标记为&lt;code class=&quot;language-text&quot;&gt;copy-on-write&lt;/code&gt;呢？可能只是为了&lt;code class=&quot;language-text&quot;&gt;side-effect&lt;/code&gt;，重新映射会导致&lt;code class=&quot;language-text&quot;&gt;TLB Invalidate&lt;/code&gt;（不确定是否是这个原因）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h4&gt;Part C: Preemptive Multitasking and Inter-Process communication (IPC)&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Comment:&lt;/strong&gt; The target environment is marked runnable again, returnning 0 from the paused &lt;code class=&quot;language-text&quot;&gt;sys_ipc_recv&lt;/code&gt; system call. (&lt;strong&gt;Hint:&lt;/strong&gt; Does &lt;code class=&quot;language-text&quot;&gt;sys_ipc_recv&lt;/code&gt; function ever actually return?)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;sys_ipc_recv&lt;/code&gt;函数不会真的&lt;code class=&quot;language-text&quot;&gt;return&lt;/code&gt;，因为其调用了&lt;code class=&quot;language-text&quot;&gt;sched_yield&lt;/code&gt;让出了CPU，也就是进行了上下文切换&lt;/li&gt;
+&lt;li&gt;通过赋值&lt;code class=&quot;language-text&quot;&gt;curenv-&amp;gt;env_tf.tf_regs.reg_eax = 0&lt;/code&gt;实现&lt;code class=&quot;language-text&quot;&gt;return 0&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Part5: The File System&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Question 1:&lt;/strong&gt; Do you have to do anything else to ensure that this I/O privilege setting is saved and restored properly when you subsequently switch from one environment to another? Why?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不需要；因为CPU并不会修改&lt;code class=&quot;language-text&quot;&gt;EFLAGS&lt;/code&gt;中的&lt;code class=&quot;language-text&quot;&gt;IOPL&lt;/code&gt;标志&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Part6: Network Driver&lt;/h3&gt;
+&lt;h4&gt;Part A: Initialization and transmitting packets&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Question 1:&lt;/strong&gt; How did you structure your transmit implementation? In particular, what do you do if the transmit ring is full?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;类似&lt;code class=&quot;language-text&quot;&gt;ipc_send&lt;/code&gt;的实现，在循环中调用发包的系统调用，当返回错误时通过&lt;code class=&quot;language-text&quot;&gt;sys_yield&lt;/code&gt;让出CPU&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h4&gt;Part B: Receiving packets and the web server&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Question 2:&lt;/strong&gt; How did you structure your receive implementation? In particular, what do you do if the receive queue is empty and a user environment requests the next incoming packet?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;基本上有两种方法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第一种是polling：暴露给用户空间的系统调用在没有包时，返回错误；用户空间的系统调用&lt;code class=&quot;language-text&quot;&gt;wrapper&lt;/code&gt;会不停的尝试（&lt;code class=&quot;language-text&quot;&gt;while&lt;/code&gt;循环），类似&lt;code class=&quot;language-text&quot;&gt;lib/ipc.c&lt;/code&gt;中&lt;code class=&quot;language-text&quot;&gt;try_send&lt;/code&gt;的实现&lt;/li&gt;
+&lt;li&gt;第二种是中断：类似&lt;code class=&quot;language-text&quot;&gt;ipc_recv&lt;/code&gt;系统调动，当没有包时，将该进程设置为&lt;code class=&quot;language-text&quot;&gt;ENV_NON_RUNNABLE&lt;/code&gt;状态；等待收包中断的到来，在中断处理函数中，唤醒阻塞进程&lt;/li&gt;
+&lt;li&gt;值得一提的是，如果使用了基于中断的方法，实验的测试程序&lt;code class=&quot;language-text&quot;&gt;testinput&lt;/code&gt;需要简单修改下，避免没有处于&lt;code class=&quot;language-text&quot;&gt;RUNNABLE&lt;/code&gt;状态的进程而陷入&lt;code class=&quot;language-text&quot;&gt;mointer&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Question 3:&lt;/strong&gt;  What does the web page served by JOS&apos;s web server say?&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Title: jhttpd on JOS body
+Body: This file came from JOS
+	  Cheesy web page! &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Question 4:&lt;/strong&gt; How long approximately did it take you to do this lab?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;four days&lt;/li&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[一些谜题]]></title><description><![CDATA[…]]></description><link>https://griddy.netlify.com//blog/puzzle/</link><guid isPermaLink="false">https://griddy.netlify.com//blog/puzzle/</guid><pubDate>Fri, 22 Dec 2017 21:21:56 GMT</pubDate><content:encoded>&lt;p&gt;来自《算法设计与分析基础》（第三版）和一些不知道在哪看到的谜题。还有一些在&lt;a href=&quot;https://xingdl2007.gitbooks.io/introduction-to-the-design-and-analysis-of-algori/content/&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+&lt;h5&gt;欧几里德游戏&lt;/h5&gt;
+&lt;p&gt;一开始，板上写有两个不相等的正整数。两个玩家交替写数字，每一次，当前玩家都必须在板上写出任意两个板上数字的差，而且这个数字必须是新的，也就是说，不能与板上任何一个已有的数字相同。当玩家再也写不出新数字时，他就输了。请问，你是选择先行动还是后行动？&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;答：假设m，n为最开始的两个正整数，其中m为较大的那个;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;N = m/gcd(m,n)&lt;/code&gt;
+如果&lt;code class=&quot;language-text&quot;&gt;N&lt;/code&gt;为偶数，则后行动；若为奇数，则先行动；通过观察可以发现，所有写出的数字，均为&lt;code class=&quot;language-text&quot;&gt;gcd&lt;/code&gt;的整倍数，从&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;到&lt;code class=&quot;language-text&quot;&gt;m/gcd&lt;/code&gt;，因此，不难推出上述结论。&lt;/p&gt;
+&lt;h5&gt;带锁的门&lt;/h5&gt;
+&lt;p&gt;在走廊上有&lt;code class=&quot;language-text&quot;&gt;n&lt;/code&gt;个带锁的门，从&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;到&lt;code class=&quot;language-text&quot;&gt;n&lt;/code&gt;依次编号。最初所有的门都是关着的。我们从门前经过&lt;code class=&quot;language-text&quot;&gt;n&lt;/code&gt;次，每一次都从&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;号门开始。在第&lt;code class=&quot;language-text&quot;&gt;i&lt;/code&gt;次经过时&lt;code class=&quot;language-text&quot;&gt;（i=1,2,..,n)&lt;/code&gt;我们改变i的整数倍号锁的状态：也就是说如果门是关着的，就打开它；如果门是打开的，就关上它。举例来说，第一次经过之后，所有的门都是打开的；第二次经过时，我们只改变偶数门的状态（&lt;code class=&quot;language-text&quot;&gt;2&lt;/code&gt;号门，&lt;code class=&quot;language-text&quot;&gt;4&lt;/code&gt;号门，&lt;code class=&quot;language-text&quot;&gt;……&lt;/code&gt;）这样一来，第二次经过之后，偶数门是关着的，而奇数门是开着的；第三次经过时，我们把&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;号门关上（该门在第一次经过时被打开），打开&lt;code class=&quot;language-text&quot;&gt;6&lt;/code&gt;号门（该门在第二次经过时被关上），以此类推。在最后一次经过后，哪些门是打开的，哪些是关上的？有多少打开的门？&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;答：对于&lt;code class=&quot;language-text&quot;&gt;i&lt;/code&gt;门，如果它没有整数的平方根&lt;code class=&quot;language-text&quot;&gt;（1,4,9…）&lt;/code&gt;，那它必然会有偶数个因子，所以在经过&lt;code class=&quot;language-text&quot;&gt;n&lt;/code&gt;次后，总是保持最初的状态；而对于&lt;code class=&quot;language-text&quot;&gt;1,4,9&lt;/code&gt;这样的门，只有奇数个因子，所以会在最后保持打开的状态；因此，总共有&lt;code class=&quot;language-text&quot;&gt;int(sqrt(n))&lt;/code&gt;(下取整，根号&lt;code class=&quot;language-text&quot;&gt;n&lt;/code&gt;)个门是打开的状态，其他均为关闭的状态。&lt;/p&gt;
+&lt;p&gt;两个应用欧几里德以及扩展算法的例子，参考了下面的文章：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.sina.com.cn/s/blog_7064e7850100yeu1.html&quot;&gt;http://blog.sina.com.cn/s/blog_7064e7850100yeu1.html&lt;/a&gt;
+&lt;a href=&quot;http://blog.csdn.net/dream_ysl/article/details/6683314&quot;&gt;http://blog.csdn.net/dream_ysl/article/details/6683314&lt;/a&gt;&lt;/p&gt;
+&lt;h5&gt;狮子和人过河&lt;/h5&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;个人和&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;头狮子站在河的一边，要用一条船把他们运送到河对岸去，但是船每次只能运送两件物体（人或狮子）。不能让留在岸边的狮子比人多，两岸皆然，因为那样狮子会吃人。你该怎么送他们过河呢？&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;答：根据题目的限制进行分析，另外狮子是不会划船的，需要人来划船。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;人，&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;狮子,坐船到对岸；&lt;/li&gt;
+&lt;li&gt;人回来，此时人只能再带&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;狮子到对岸，否则会有人被吃掉；&lt;/li&gt;
+&lt;li&gt;人回来，此时对岸有&lt;code class=&quot;language-text&quot;&gt;2&lt;/code&gt;狮子，若再带狮子过去，则无法完成任务；因此人只能带&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;人过去，此时对岸有&lt;code class=&quot;language-text&quot;&gt;2&lt;/code&gt;人，&lt;code class=&quot;language-text&quot;&gt;2&lt;/code&gt;狮子；&lt;/li&gt;
+&lt;li&gt;此时，只能&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;人，&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;狮子回来，否则两边有人被吃掉（关键步骤）；&lt;/li&gt;
+&lt;li&gt;人再将&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;人送到对岸，此时只剩下&lt;code class=&quot;language-text&quot;&gt;2&lt;/code&gt;狮子留在原地；&lt;/li&gt;
+&lt;li&gt;人再来回两次，每次不上岸，直接接上狮子从到对岸；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;经过以上的步骤，&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;人和&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;狮子成功的过了河。这个过程的关键点是&lt;code class=&quot;language-text&quot;&gt;d&lt;/code&gt;，如果在&lt;code class=&quot;language-text&quot;&gt;b&lt;/code&gt;之后，还选择将狮子带到对岸，则会进入死胡同。所以在将&lt;code class=&quot;language-text&quot;&gt;2&lt;/code&gt;个狮子送到对岸后，只能再带两个人过去，这时唯一的选择，就是再带一个狮子回来，似乎是做了无用功，但是这一点对整个问题的解决至关重要。&lt;/p&gt;
+&lt;h5&gt;用沙漏计时&lt;/h5&gt;
+&lt;p&gt;用一个能计时&lt;code class=&quot;language-text&quot;&gt;4&lt;/code&gt;分钟的沙漏和能计时&lt;code class=&quot;language-text&quot;&gt;7&lt;/code&gt;分钟的沙漏，精确计时&lt;code class=&quot;language-text&quot;&gt;9&lt;/code&gt;分钟。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;答：这个问题的关键是要精确的计时&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;分钟，因为我们有可以计时&lt;code class=&quot;language-text&quot;&gt;4&lt;/code&gt;分钟的沙漏，使用它计时两次，然后再加上&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;分钟，就完成了精确计时&lt;code class=&quot;language-text&quot;&gt;9&lt;/code&gt;分钟的目标。另外，我们还有&lt;code class=&quot;language-text&quot;&gt;7&lt;/code&gt;分钟的沙漏，而&lt;code class=&quot;language-text&quot;&gt;4 * 2 - 7 = 1&lt;/code&gt;启发我们去构造1分钟的沙漏。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将&lt;code class=&quot;language-text&quot;&gt;4&lt;/code&gt;分钟、&lt;code class=&quot;language-text&quot;&gt;7&lt;/code&gt;分钟的沙漏同时开始计时；&lt;/li&gt;
+&lt;li&gt;待&lt;code class=&quot;language-text&quot;&gt;4&lt;/code&gt;分钟沙漏结束后，立即翻转；&lt;code class=&quot;language-text&quot;&gt;7&lt;/code&gt;分钟的沙漏不动；&lt;/li&gt;
+&lt;li&gt;待&lt;code class=&quot;language-text&quot;&gt;7&lt;/code&gt;分钟的沙漏结束后，立即翻转；&lt;code class=&quot;language-text&quot;&gt;4&lt;/code&gt;分钟的沙漏不动；&lt;/li&gt;
+&lt;li&gt;待&lt;code class=&quot;language-text&quot;&gt;4&lt;/code&gt;分钟沙漏结束后，将两个沙漏同时翻转；&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;7&lt;/code&gt;分钟沙漏结束后，即完成了&lt;code class=&quot;language-text&quot;&gt;9&lt;/code&gt;分钟的精确计时&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;另外还有其他的方法，但是此方法可以不需要等待，直接开始计时，关键点是将&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;分钟的时间复制到&lt;code class=&quot;language-text&quot;&gt;7&lt;/code&gt;分钟的沙漏中去。&lt;/p&gt;
+&lt;h5&gt;扑克牌&lt;/h5&gt;
+&lt;p&gt;在一个黑暗的房间，有人塞给你一叠牌，有&lt;code class=&quot;language-text&quot;&gt;N&lt;/code&gt;张面朝上，其余的面朝下。你看不见牌，怎么才能把牌分成两堆，让每堆面朝上的牌数目相同呢？&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;答：注意题目中并没有说要两堆包含相同数目的牌，而只是说要面朝上的牌数目相同，甚至不是&lt;code class=&quot;language-text&quot;&gt;N/2&lt;/code&gt;。
+假设第一推有&lt;code class=&quot;language-text&quot;&gt;M&lt;/code&gt;张牌，其中有&lt;code class=&quot;language-text&quot;&gt;a&lt;/code&gt;张朝上，一共有&lt;code class=&quot;language-text&quot;&gt;A&lt;/code&gt;张牌。由于黑暗，我们能够做的操作仅仅是将牌进行翻转，因此共有三种情况。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;case A:
+第一堆: &lt;code class=&quot;language-text&quot;&gt;a&lt;/code&gt;
+第二堆: &lt;code class=&quot;language-text&quot;&gt;N - a&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;case B:
+第一堆: &lt;code class=&quot;language-text&quot;&gt;M - a&lt;/code&gt;
+第二堆: &lt;code class=&quot;language-text&quot;&gt;N - a&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;case C:
+第一堆: &lt;code class=&quot;language-text&quot;&gt;a&lt;/code&gt;
+第二堆: &lt;code class=&quot;language-text&quot;&gt;A - M - N + a&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;对于第一钟情况，无法得到可操作的方案。&lt;/li&gt;
+&lt;li&gt;第二种情况，若要使&lt;code class=&quot;language-text&quot;&gt;M - a = N - a&lt;/code&gt;显然，&lt;code class=&quot;language-text&quot;&gt;M = N&lt;/code&gt;，因此我们只需要输出N张牌，然后将其翻转，那么就获得了两堆牌并且包含相同数目的面朝上的牌。&lt;/li&gt;
+&lt;li&gt;第三种情况，则要求&lt;code class=&quot;language-text&quot;&gt;A - M - N = 0&lt;/code&gt;即 &lt;code class=&quot;language-text&quot;&gt;M + N = A&lt;/code&gt;和第二种情况本质上一致，即输出&lt;code class=&quot;language-text&quot;&gt;A - N&lt;/code&gt;张后，将剩余的翻转。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5&gt;箱子选择&lt;/h5&gt;
+&lt;p&gt;有&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;口箱子，一口箱子里面装有贵重的奖品，另外两口箱子是空的。你可以选择一口箱子，但兵不告诉你里面是否有奖品。相反，人们打开了你没选的那两口箱子之一，里面是空的。你可以保留最初选中的箱子（留），或者换另外一口没有打开的箱子（换）。你会怎么做，“留”还是“换”？&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;答：这个问题非常有迷惑性，因为在题目中有故意隐含的信息，大多数人都会忽略这一点。那就是，人们打开了你没选的那两口箱子之一，这样的选择是故意的，还是随机的。不同的选择会影响正确的选择，根据题目的设定，往往是“故意的”。&lt;/p&gt;
+&lt;p&gt;因此，如果打开空箱子的人知道奖品在哪个箱子中，而故意打开没有奖品的哪个，这就大大增加了第三个箱子中有奖品的概率。因此，选择“换”就是比较明智的了。&lt;/p&gt;
+&lt;p&gt;从概率的角度来分析，如果打开空箱子的选择是随机的，那么无论选择“留”还是“换”，拿到奖品的概率均由原来的&lt;code class=&quot;language-text&quot;&gt;1/3&lt;/code&gt;上升到了&lt;code class=&quot;language-text&quot;&gt;1/2&lt;/code&gt;；如果打开是空箱子的选择行为时故意的，如果选择“留”，那么拿到奖品的概率是&lt;code class=&quot;language-text&quot;&gt;1/3&lt;/code&gt;，而如果选择“换”，其概率为&lt;code class=&quot;language-text&quot;&gt;2/3&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;从上面的分析可以看出，无论打开空箱子的选择行为时随机的还是故意的，选择“换”箱子都会有最大的概率拿到奖品。&lt;/p&gt;
+&lt;h5&gt;找出跑的最快的三匹马&lt;/h5&gt;
+&lt;p&gt;你有&lt;code class=&quot;language-text&quot;&gt;25&lt;/code&gt;匹马，需要多少场比赛才能找出跑的最快的&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;匹马？你没有秒表，每场比赛只能同时让&lt;code class=&quot;language-text&quot;&gt;5&lt;/code&gt;匹马参赛。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;答：首先，容易想到的是将&lt;code class=&quot;language-text&quot;&gt;25&lt;/code&gt;匹马分成&lt;code class=&quot;language-text&quot;&gt;5&lt;/code&gt;组，每组进行一轮比赛，选出各组的第一名，然后再让这&lt;code class=&quot;language-text&quot;&gt;5&lt;/code&gt;个第一名进行一次比赛。如果你认为这样就可以选出前三名，那就错了。因为你忽略了一个重要问题：本小组的第一名，一定会比其他组所有马跑的都快吗？这显然是不成立的。&lt;/p&gt;
+&lt;p&gt;因此正确的做法是这样的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将&lt;code class=&quot;language-text&quot;&gt;25&lt;/code&gt;匹马分成&lt;code class=&quot;language-text&quot;&gt;5&lt;/code&gt;组，进行比赛，同时记录每组马的名次，一共要进行&lt;code class=&quot;language-text&quot;&gt;5&lt;/code&gt;场；&lt;/li&gt;
+&lt;li&gt;将&lt;code class=&quot;language-text&quot;&gt;5&lt;/code&gt;组的头名再进行一场比赛，可以选出跑的最快的马，此阶段要进行&lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt;场比赛；&lt;/li&gt;
+&lt;li&gt;将上一轮中选出的最快的马牵走，用它所在组的第二名代替进行比赛，即可选出第二名，此阶段要进行1场比赛；&lt;/li&gt;
+&lt;li&gt;同上，可选出最快的第三匹，此阶段要进行1场比赛；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此，需要进行&lt;code class=&quot;language-text&quot;&gt;5 + 1 + 1 + 1 = 8&lt;/code&gt;场比赛，才能找出跑的最快的三匹马。&lt;/p&gt;
+&lt;h5&gt;快速找到对应的电线&lt;/h5&gt;
+&lt;p&gt;一幢大楼的底层有&lt;code class=&quot;language-text&quot;&gt;1001&lt;/code&gt;根电线，这些电线一直延伸到大楼楼顶，你需要确定底层的&lt;code class=&quot;language-text&quot;&gt;1001&lt;/code&gt;个线头和楼顶的&lt;code class=&quot;language-text&quot;&gt;1001&lt;/code&gt;次线头的对应关系。你有一个电池，一个灯泡，和许多很短的电线，你需要上下楼几次才能确定电线接头的对应关系。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;答：这个问题只问需要上下楼几次，而不关心时间的问题，因此我们只要给出理论值即可，不用考虑是否高效。
+假设人初始在楼下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先将&lt;code class=&quot;language-text&quot;&gt;1001&lt;/code&gt;根电线&lt;code class=&quot;language-text&quot;&gt;2&lt;/code&gt;个一组，使用短线连接起来，这样会有单独的一根；&lt;/li&gt;
+&lt;li&gt;接着上楼，使用电池和灯泡组成电路，将所有能将灯泡点亮的电线归为一组，并且放好，唯一不能和其他组成电路的电线被找到，即确认了一根电线；同时将此确认的电线和其他分好组的其中一组中的某根进行相连，然后下楼。在摆放电线时，顺序非常重要，可以将待确认电线，放在已确认电线的一侧，方便标记。&lt;/li&gt;
+&lt;li&gt;到楼下后，将所有的连接好的分组断开，但要保持其分组关系。然后使用电池和灯泡，将已经确认的那根电线和其他任意的电线相连，找到能够点亮灯泡的那个分组，这样就可以确认两外的两条电线了。接着在再将已经确认的三条电线，分别与其他待确认的&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;组中的其中一根相连，然后上楼。&lt;/li&gt;
+&lt;li&gt;将已经确认的电线断开，分别使用已经确认的&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;条电线找到其他可点亮灯泡的电线，这样就可以再确认&lt;code class=&quot;language-text&quot;&gt;3&lt;/code&gt;组。&lt;/li&gt;
+&lt;li&gt;重复以上过程，直到确认所有电线的连接关系。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;从以上分析过程可看出，这个是一个等比数列，上下楼一趟可确认的电线数目分别为&lt;code class=&quot;language-text&quot;&gt;1、3、9、27…&lt;/code&gt;，而&lt;code class=&quot;language-text&quot;&gt;3^6 = 729，3^7 = 2187&lt;/code&gt;可知，至少要上下楼&lt;code class=&quot;language-text&quot;&gt;7&lt;/code&gt;才能确认所有的&lt;code class=&quot;language-text&quot;&gt;1001&lt;/code&gt;根电线接头的对应关系。在这种方法中，非常依赖电线摆放的顺序，楼上楼下电线的拜访规则要保持一致，这样连接关系才能得到确认。&lt;/p&gt;</content:encoded></item></channel></rss>
