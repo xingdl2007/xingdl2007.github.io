@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<url> <loc>https://griddy.netlify.com/gallery/Alex-and-seira/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/gallery/Alex-Fanart/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/gallery/mira/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/gallery/free-palestine/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/gallery/wahyu/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/gallery/stylized-portrait-tribute-to-razan-al-najjar/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/blog/leveldb/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/blog/how-to-improve/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/blog/career-roadmap/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/blog/nosql-databases-an-overview/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/about/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/blog/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/friend/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/gallery/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://griddy.netlify.com/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+</urlset>
